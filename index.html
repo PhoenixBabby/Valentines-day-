@@ -5,219 +5,126 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For Veerena 💕</title>
 <style>
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin:0; padding:0; }
+html, body { width: 100%; height: 100%; }
 
 body {
-    margin: 0;
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(135deg, #ffc0cb, #ffe4ec);
-    overflow: hidden;
-    color: #ff4d88;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    color: #ff4d88;
+}
+
+/* SOFT PINK GLOW */
+body::before {
+    content:'';
+    position:absolute;
+    top:0; left:0;
+    width:100%; height:100%;
+    background: radial-gradient(circle, rgba(255,182,193,0.2), transparent 70%);
+    animation: pulseGlow 4s infinite alternate;
+    z-index: 0;
+}
+@keyframes pulseGlow {
+    0% {opacity:0.7;} 100% {opacity:0.4;}
 }
 
 /* PASSWORD SCREEN */
 #passwordScreen {
-    display: flex;
-    position: fixed;
-    top:0; left:0;
-    width: 100%; height: 100vh;
+    position: fixed; top:0; left:0;
+    width:100%; height:100%;
     background: linear-gradient(135deg, #ffb6c1, #ffc0cb);
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
     z-index: 20;
 }
-
 input {
-    padding: 12px;
-    border-radius: 25px;
-    border: none;
-    text-align: center;
-    width: 200px;
+    padding: 12px; border-radius: 25px; border: none; text-align: center; width: 200px;
 }
 
 /* ENVELOPE SCREEN */
 #intro {
-    display: none;
-    width: 100%;
-    height: 100vh;
+    display: none; position: fixed; top:0; left:0;
+    width:100%; height:100%;
     background: linear-gradient(135deg, #ffb6c1, #ffc0cb);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
     z-index: 10;
 }
-
 #envelope {
-    width: 200px;
-    cursor: pointer;
-    transition: transform 0.6s ease;
+    width: 200px; cursor: pointer; transform-origin: top center; transition: transform 1s ease;
 }
-#envelope:hover { transform: scale(1.1); }
-
-.fadeOut { animation: fadeOut 1s forwards; }
-@keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
+#envelope.open { transform: rotateX(180deg) scale(1.2); }
 
 /* MAIN CONTENT */
 #mainContent {
     display: none;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding: 10px;
+    width: 100%; height: 100%;
+    display: flex; justify-content: center; align-items: center;
+    position: relative; z-index: 5;
 }
-
 .container {
-    max-width: 420px;
-    width: 95vw;
-    margin: 0 auto;
-    padding: 25px;
-    background: rgba(255,255,255,0.85);
-    border-radius: 25px;
-    box-shadow: 0 10px 40px rgba(255,105,180,0.3);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    max-width: 420px; width: 95vw;
+    padding: 25px; background: rgba(255,255,255,0.85);
+    border-radius: 25px; box-shadow: 0 10px 40px rgba(255,105,180,0.3);
+    display: flex; flex-direction: column; justify-content: center;
+    align-items: center; text-align: center; position: relative;
 }
 
-/* CUSTOM TEXT BOX */
+/* LOVE NOTE */
 #customTextBox {
-    width: 100%;
-    border-radius: 15px;
-    border: 2px solid #ff69b4;
-    padding: 10px;
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.95rem;
-    height: 120px;
-    line-height: 1.4;
-    resize: none;
-    overflow-y: hidden;
+    width: 100%; border-radius: 15px; border: 2px solid #ff69b4;
+    padding: 10px; font-size: 0.95rem; height: 120px; line-height: 1.4;
+    resize: none; overflow-y: auto; text-align: left; margin-bottom: 15px;
 }
 
 /* GALLERY */
 .gallery {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: center;
-    margin: 15px 0;
+    display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; margin: 15px 0;
 }
-
 .gallery img {
-    width: 200px;
-    max-width: 90vw;
-    height: auto;
-    border-radius: 20px;
-    border: 3px solid #ff69b4;
-    transition: box-shadow 0.3s, transform 0.3s;
+    width: 200px; max-width: 90vw; height: auto; border-radius: 20px;
+    border: 3px solid #ff69b4; transition: box-shadow 0.3s, transform 0.3s;
 }
 
 /* BUTTONS */
 .buttons {
-    position: relative;
-    height: 120px;
-    width: 100%;
-    margin-bottom: 20px;
-    overflow: hidden;
+    position: relative; height: 120px; width: 100%; margin-bottom: 20px;
 }
-
 button {
-    padding: 12px 25px;
-    border-radius: 30px;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
+    padding: 12px 25px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer;
 }
-
-#yesBtn {
-    background: #ff69b4;
-    color: white;
-    position: absolute;
-    left: 20%;
-}
-
-#noBtn {
-    background: white;
-    color: #ff4d88;
-    border: 2px solid #ff69b4;
-    position: absolute;
-    left: 55%;
-}
+#yesBtn { background: #ff69b4; color:white; position:absolute; left:20%; }
+#noBtn { background: white; color: #ff4d88; border: 2px solid #ff69b4; position:absolute; left:55%; }
 
 /* CELEBRATION */
-#celebration {
-    display: none;
-    margin-top: 20px;
-    font-size: 1.4rem;
-}
+#celebration { display: none; margin-top: 20px; font-size: 1.4rem; }
 
 /* HIDDEN MESSAGE */
 #hiddenMessageContainer {
-    display: none;
-    margin-top: 20px;
-    padding: 10px;
-    background: rgba(255,182,193,0.4);
-    border-radius: 15px;
-    max-height: 180px;
-    overflow-y: auto;
+    display: none; margin-top: 20px; padding: 10px;
+    background: rgba(255,182,193,0.4); border-radius: 15px;
+    max-height: 180px; overflow-y: auto;
 }
 
-/* SCROLL HINT */
-#scrollHint {
-    display: none;
-    margin-top: 5px;
-    font-size: 1.2rem;
-    opacity: 0.6;
-    animation: fadeHint 1s forwards 10s;
+/* FLOATING PETALS */
+.floatingPetal {
+    position: absolute; width: 30px; pointer-events: none; opacity: 0.9;
+    animation-name: floatPetal; animation-timing-function: linear; animation-iteration-count: infinite;
 }
-@keyframes fadeHint { to { opacity: 0; } }
+@keyframes floatPetal { 0%{transform: translateY(0) rotate(0deg);} 100%{transform: translateY(100vh) rotate(360deg);} }
 
-/* LILIES AND PETALS */
-.lily, .petal {
-    position: absolute;
-    opacity: 0.9;
-    pointer-events: none;
-}
-
+/* LILIES & PETALS FROM BEFORE */
+.lily, .petal { position: absolute; opacity:0.9; pointer-events:none; }
 .lily { width: 50px; animation-name: floatDown; animation-timing-function: linear; animation-iteration-count: infinite; }
-.petal { width: 40px; animation-name: fall; animation-timing-function: linear; animation-iteration-count: 1; }
+.petal { width: 40px; animation-name: fall; animation-timing-function: linear; animation-iteration-count:1; }
+@keyframes floatDown {0%{transform:translateY(0) rotate(0deg);}100%{transform:translateY(100vh) rotate(360deg);}}
+@keyframes fallFromPhoto {0%{transform:translateY(0) rotate(0deg);}100%{transform:translateY(260px) rotate(var(--rotate-deg));}}
 
-@keyframes floatDown {
-    0% { transform: translateY(0px) rotate(0deg); }
-    100% { transform: translateY(100vh) rotate(360deg); }
-}
-
-@keyframes fallFromPhoto {
-    0% { transform: translateY(0px) rotate(0deg); }
-    100% { transform: translateY(260px) rotate(var(--rotate-deg)); }
-}
-
-/* SPARKLE */
-@keyframes sparkle {
-    0% { transform: scale(0.3) rotate(0deg); opacity: 1; }
-    50% { transform: scale(1) rotate(180deg); opacity: 0.8; }
-    100% { transform: scale(0.1) rotate(360deg); opacity: 0; }
-}
-
-.sparkle {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    background: radial-gradient(circle, #fff 0%, #ff69b4 80%);
-    border-radius: 50%;
-    pointer-events: none;
-    animation: sparkle 0.8s ease-out forwards;
-    z-index: 100;
-}
 </style>
 </head>
 <body>
@@ -243,10 +150,8 @@ button {
         <h2>Veerena 🌸</h2>
         <p>Will you be my Valentine?</p>
 
-        <!-- LOVE NOTE TEXT BOX -->
         <textarea id="customTextBox" readonly></textarea>
 
-        <!-- GALLERY -->
         <div class="gallery">
             <img src="photo1.jpg">
             <img src="photo2.jpg">
@@ -264,7 +169,6 @@ button {
                 I will always love you baby even on the days it feels hard for both of us to understand each other we will get through thick and thin together and I know you feel the same. Please remember I’m still the same boy you fell in love with. We are going to close the distance and live the life we want together. Happy valentines my love you really do mean the world to me.
             </div>
         </div>
-        <div id="scrollHint">⬆️⬇️ Scroll to read 💕</div>
     </div>
 </div>
 
@@ -273,154 +177,106 @@ button {
 </audio>
 
 <script>
-const correctPassword = "my love";
+const correctPassword="my love";
 
 /* PASSWORD */
-function checkPassword() {
-    if(document.getElementById("passwordInput").value === correctPassword) {
-        document.getElementById("passwordScreen").style.display = "none";
-        document.getElementById("intro").style.display = "flex";
+function checkPassword(){
+    if(document.getElementById("passwordInput").value===correctPassword){
+        document.getElementById("passwordScreen").style.display="none";
+        document.getElementById("intro").style.display="flex";
     } else {
-        document.getElementById("error").innerText = "Wrong password 💔";
+        document.getElementById("error").innerText="Wrong password 💔";
     }
 }
 
-/* ENVELOPE */
-document.getElementById("envelope").addEventListener("click", () => {
-    document.getElementById("intro").classList.add("fadeOut");
-    setTimeout(() => {
-        document.getElementById("mainContent").style.display = "flex";
-        createLilies();   
-        createPetals();   
+/* ENVELOPE CLICK */
+const envelope=document.getElementById("envelope");
+envelope.addEventListener("click",()=>{
+    envelope.classList.add("open");
+    setTimeout(()=>{
+        document.getElementById("intro").style.display="none";
+        document.getElementById("mainContent").style.display="flex";
+        createFloatingPetals();
+        createLilies();
+        createPetals();
         typeLoveNote();
-    }, 1000);
+    },1000);
 });
 
+/* LOVE NOTE TYPING + SCROLL */
+const loveNote=`This took me a bit longer than you might think to make baby, I know you said didn't want me buying you anything and I couldn't just not get you something for valentines day regardless of what we have going on so I made this for you. Every line of code is for you Veerena this is your website. Im sorry if it's not that extravagant but I hope you enjoy it and look at it from time to time. I love you please enjoy.`;
+function typeLoveNote(){
+    const textarea=document.getElementById("customTextBox");
+    let i=0; textarea.value="";
+    const interval=setInterval(()=>{
+        textarea.value+=loveNote.charAt(i);
+        textarea.scrollTop = textarea.scrollHeight;
+        i++;
+        if(i>=loveNote.length) clearInterval(interval);
+    },20);
+}
+
 /* NO BUTTON RUNAWAY */
-const noBtn = document.getElementById("noBtn");
-const buttonsContainer = document.querySelector('.buttons');
-noBtn.addEventListener("touchstart", moveNo);
-noBtn.addEventListener("mouseover", moveNo);
-function moveNo() {
-    const maxX = buttonsContainer.offsetWidth - noBtn.offsetWidth;
-    const maxY = buttonsContainer.offsetHeight - noBtn.offsetHeight;
-    noBtn.style.left = Math.random() * maxX + "px";
-    noBtn.style.top = Math.random() * maxY + "px";
+const noBtn=document.getElementById("noBtn");
+const buttonsContainer=document.querySelector('.buttons');
+noBtn.addEventListener("mouseover",moveNo);
+noBtn.addEventListener("touchstart",moveNo);
+function moveNo(){
+    const maxX=buttonsContainer.offsetWidth-noBtn.offsetWidth;
+    const maxY=buttonsContainer.offsetHeight-noBtn.offsetHeight;
+    noBtn.style.left=Math.random()*maxX+"px";
+    noBtn.style.top=Math.random()*maxY+"px";
 }
 
 /* YES BUTTON */
-const yesBtn = document.getElementById("yesBtn");
-const music = document.getElementById("bgMusic");
-music.volume = 0.4;
-
-yesBtn.addEventListener("click", () => {
-    document.getElementById("celebration").style.display = "block";
-    createPetalsFromPhotos(); 
-    createLiliesFromPhotos(); 
-    glowGalleryPhotos();
-
-    setTimeout(() => {
-        document.getElementById("hiddenMessageContainer").style.display = "block";
-        document.getElementById("scrollHint").style.display = "block";
-    }, 15000); // hidden message after 15 seconds
-
-    // Sparkles
-    for(let i=0;i<8;i++){
-        const sparkle = document.createElement("div");
-        sparkle.classList.add("sparkle");
-        sparkle.style.left = yesBtn.offsetLeft + yesBtn.offsetWidth/2 + (Math.random()*80-40) + "px";
-        sparkle.style.top = yesBtn.offsetTop + yesBtn.offsetHeight/2 + (Math.random()*80-40) + "px";
-        document.body.appendChild(sparkle);
-        setTimeout(() => sparkle.remove(), 800);
-    }
-
+const yesBtn=document.getElementById("yesBtn");
+const music=document.getElementById("bgMusic");
+music.volume=0.4;
+yesBtn.addEventListener("click",()=>{
+    document.getElementById("celebration").style.display="block";
+    setTimeout(()=>{
+        document.getElementById("hiddenMessageContainer").style.display="block";
+    },15000);
     music.play();
 });
 
-/* LOVE NOTE TYPING */
-const loveNote = `This took me a bit longer than you might think to make baby, I know you said didn't want me buying you anything and I couldn't just not get you something for valentines day regardless of what we have going on so I made this for you. Every line of code is for you Veerena this is your website. Im sorry if it's not that extravagant but I hope you enjoy it and look at it from time to time. I love you please enjoy.`;
-function typeLoveNote() {
-    const textArea = document.getElementById("customTextBox");
-    let i=0;
-    textArea.value = "";
-    const interval = setInterval(()=>{
-        textArea.value += loveNote.charAt(i);
-        i++;
-        if(i>=loveNote.length) clearInterval(interval);
-    }, 20);
-}
-
-/* GALLERY PHOTO GLOW */
-function glowGalleryPhotos() {
-    const photos = document.querySelectorAll('.gallery img');
-    photos.forEach(photo => {
-        photo.style.boxShadow = "0 0 25px #ff69b4";
-    });
-}
-
-/* LILIES AND PETALS */
-function createLilies() {
-    setInterval(() => {
-        const lilies = document.querySelectorAll('.lily');
-        if(lilies.length>=8) return;
-        const lily = document.createElement("img");
-        lily.src="lily.png";
-        lily.classList.add("lily");
-        lily.style.left = Math.random()*window.innerWidth + "px";
-        lily.style.top = "-60px";
-        lily.style.animationDuration = (10+Math.random()*4)+"s";
-        document.body.appendChild(lily);
-        setTimeout(()=>lily.remove(),parseFloat(lily.style.animationDuration)*1000);
-    }, 3000);
-}
-
-function createPetals() {
-    const maxPetals=25;
+/* FLOATING PETALS BEHIND CONTAINER */
+function createFloatingPetals(){
     setInterval(()=>{
-        const petals = document.querySelectorAll('.petal');
-        if(petals.length>=maxPetals) return;
         const petal=document.createElement("img");
         petal.src="petal.png";
-        petal.classList.add("petal");
-        petal.style.left = Math.random()*window.innerWidth + "px";
+        petal.classList.add("floatingPetal");
+        petal.style.left=Math.random()*window.innerWidth+"px";
         petal.style.top="-40px";
-        petal.style.setProperty('--rotate-deg',Math.floor(90+Math.random()*270)+'deg');
-        petal.style.animationDuration = (5+Math.random()*3) + "s";
+        petal.style.animationDuration=(6+Math.random()*3)+"s";
         document.body.appendChild(petal);
-    },400);
+        setTimeout(()=>petal.remove(),10000);
+    },500);
 }
 
-function createPetalsFromPhotos() {
-    const galleryPhotos=document.querySelectorAll('.gallery img');
-    setInterval(()=>{
-        const photo=galleryPhotos[Math.floor(Math.random()*galleryPhotos.length)];
-        const rect=photo.getBoundingClientRect();
-        const petal=document.createElement("img");
-        petal.src="petal.png";
-        petal.classList.add("petal");
-        petal.style.left=rect.left+Math.random()*rect.width+"px";
-        petal.style.top=rect.top+"px";
-        petal.style.setProperty('--rotate-deg',Math.floor(90+Math.random()*270)+'deg');
-        petal.style.animationName="fallFromPhoto";
-        petal.style.animationDuration=(4+Math.random()*2)+"s";
-        document.body.appendChild(petal);
-    },300);
-}
-
-function createLiliesFromPhotos() {
-    const galleryPhotos=document.querySelectorAll('.gallery img');
-    setInterval(()=>{
-        const photo=galleryPhotos[Math.floor(Math.random()*galleryPhotos.length)];
-        const rect=photo.getBoundingClientRect();
-        const lily=document.createElement("img");
-        lily.src="lily.png";
-        lily.classList.add("lily");
-        lily.style.left=rect.left+Math.random()*rect.width+"px";
-        lily.style.top=rect.top+"px";
-        lily.style.animationDuration=(8+Math.random()*3)+"s";
-        document.body.appendChild(lily);
-    },4000);
-}
+/* LILIES & PETALS */
+function createLilies(){ setInterval(()=>{
+    if(document.querySelectorAll('.lily').length>=8) return;
+    const lily=document.createElement("img");
+    lily.src="lily.png";
+    lily.classList.add("lily");
+    lily.style.left=Math.random()*window.innerWidth+"px";
+    lily.style.top="-60px";
+    lily.style.animationDuration=(10+Math.random()*4)+"s";
+    document.body.appendChild(lily);
+    setTimeout(()=>lily.remove(),parseFloat(lily.style.animationDuration)*1000);
+},3000);}
+function createPetals(){ const maxPetals=25; setInterval(()=>{
+    if(document.querySelectorAll('.petal').length>=maxPetals) return;
+    const petal=document.createElement("img");
+    petal.src="petal.png";
+    petal.classList.add("petal");
+    petal.style.left=Math.random()*window.innerWidth+"px";
+    petal.style.top="-40px";
+    petal.style.setProperty('--rotate-deg',Math.floor(90+Math.random()*270)+'deg');
+    petal.style.animationDuration=(5+Math.random()*3)+"s";
+    document.body.appendChild(petal);
+},400);}
 </script>
 </body>
 </html>
