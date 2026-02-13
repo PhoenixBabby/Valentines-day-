@@ -12,16 +12,16 @@ body {
     margin: 0;
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(135deg, #ffc0cb, #ffe4ec);
-    overflow: hidden;
+    overflow-y: auto; /* allow vertical scroll */
     text-align: center;
     color: #ff4d88;
+    min-height: 100vh;
 }
 
 /* Envelope Intro */
 #intro {
-    position: fixed;
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     background: linear-gradient(135deg, #ffb6c1, #ffc0cb);
     display: flex;
     justify-content: center;
@@ -84,7 +84,11 @@ input {
 }
 
 /* Buttons */
-.buttons { position: relative; height: 100px; }
+.buttons {
+    position: relative;
+    height: 120px;
+    margin-bottom: 20px;
+}
 
 button {
     padding: 12px 25px;
@@ -103,7 +107,7 @@ button {
 
 #noBtn {
     background: white;
-    color: #ff69b4;
+    color: #ff4d88;
     border: 2px solid #ff69b4;
     position: absolute;
     left: 55%;
@@ -137,7 +141,9 @@ button {
 .lily {
     position: absolute;
     width: 60px;
-    animation: floatDown 12s linear infinite;
+    animation-name: floatDown;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
     opacity: 0.8;
     will-change: transform;
 }
@@ -153,9 +159,13 @@ button {
     will-change: transform;
 }
 
+/* Lilies float and drift naturally */
 @keyframes floatDown {
-    0% { transform: translateY(-100px) rotate(0deg); }
-    100% { transform: translateY(110vh) rotate(360deg); }
+    0% { transform: translateY(-100px) translateX(0px) rotate(0deg); }
+    25% { transform: translateY(25vh) translateX(15px) rotate(90deg); }
+    50% { transform: translateY(50vh) translateX(-15px) rotate(180deg); }
+    75% { transform: translateY(75vh) translateX(10px) rotate(270deg); }
+    100% { transform: translateY(110vh) translateX(0px) rotate(360deg); }
 }
 
 @keyframes fall {
@@ -267,7 +277,7 @@ yesBtn.addEventListener("click", () => {
     }, 10000);
 });
 
-/* Optimized Lilies for mobile */
+/* Optimized Lilies for mobile with random horizontal drift */
 function createLilies() {
     const maxLilies = 8; 
     setInterval(() => {
@@ -277,8 +287,13 @@ function createLilies() {
         lily.src = "lily.png"; // transparent PNG
         lily.classList.add("lily");
         lily.style.left = Math.random() * window.innerWidth + "px";
+
+        // Random animation duration between 10s and 14s
+        const duration = (10 + Math.random() * 4) + "s";
+        lily.style.animationDuration = duration;
+
         document.body.appendChild(lily);
-        setTimeout(() => lily.remove(), 12000);
+        setTimeout(() => lily.remove(), parseFloat(duration) * 1000);
     }, 3000);
 }
 
