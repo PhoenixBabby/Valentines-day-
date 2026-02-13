@@ -12,10 +12,13 @@ body {
     margin: 0;
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(135deg, #ffc0cb, #ffe4ec);
-    overflow-y: auto;
+    overflow: hidden;
     text-align: center;
     color: #ff4d88;
-    min-height: 100vh;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* PASSWORD SCREEN CENTERED */
@@ -45,7 +48,7 @@ input {
 #intro {
     display: none;
     width: 100%;
-    min-height: 100vh;
+    height: 100vh;
     background: linear-gradient(135deg, #ffb6c1, #ffc0cb);
     display: flex;
     justify-content: center;
@@ -68,34 +71,33 @@ input {
 /* MAIN CONTENT CENTERED */
 #mainContent { 
     display: none; 
-    padding: 0; 
-    margin: 0;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
+    height: 100vh;
 }
 
-/* CONTAINER WITHOUT TOP SPACE */
+/* CONTAINER */
 .container {
-    margin: 0 auto 20px auto;
+    margin: 0 auto;
     padding: 25px;
     background: rgba(255,255,255,0.75);
     border-radius: 25px;
     box-shadow: 0 10px 40px rgba(255,105,180,0.3);
     max-width: 420px;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 /* GALLERY */
 .gallery {
     display: flex;
-    overflow-x: auto;
     gap: 15px;
-    margin: 0;
-    scroll-snap-type: x mandatory;
+    margin: 0 0 20px 0;
     justify-content: center;
-    align-items: flex-start;
-    position: relative;
 }
 
 .gallery img {
@@ -104,17 +106,23 @@ input {
     object-fit: cover;
     border-radius: 20px;
     border: 3px solid #ff69b4;
-    flex-shrink: 0;
-    scroll-snap-align: center;
+    transition: box-shadow 0.3s, transform 0.3s;
+}
+
+/* Continuous pink glow pulsing */
+@keyframes pinkPulse {
+    0% { box-shadow: 0 0 0px #ff69b4; transform: scale(1); }
+    50% { box-shadow: 0 0 25px #ff69b4; transform: scale(1.02); }
+    100% { box-shadow: 0 0 0px #ff69b4; transform: scale(1); }
 }
 
 /* BUTTONS */
 .buttons {
     position: relative;
     height: 120px;
-    margin-top: 10px;
+    width: 100%;
     margin-bottom: 20px;
-    overflow: hidden; /* NO button stays inside */
+    overflow: hidden;
 }
 
 button {
@@ -147,7 +155,7 @@ button {
     font-size: 1.4rem;
 }
 
-/* HIDDEN MESSAGE SCROLLABLE WITH SCROLL HINT BELOW TEXT */
+/* HIDDEN MESSAGE SCROLLABLE */
 #hiddenMessageContainer {
     display: none;
     margin-top: 20px;
@@ -161,69 +169,39 @@ button {
     position: relative;
 }
 
-#hiddenMessageContainer::after {
-    content: "⬆️⬇️";
-    position: absolute;
-    bottom: 5px;
-    left: 50%;
-    transform: translateX(-50%);
+/* SCROLL HINT BELOW MESSAGE */
+#scrollHint {
+    display: none;
+    margin-top: 5px;
     font-size: 1.2rem;
     opacity: 0.6;
-    animation: bounce 1.2s infinite, fadeHint 1s forwards 10s;
+    animation: fadeHint 1s forwards 10s;
 }
 
-@keyframes bounce {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50% { transform: translateX(-50%) translateY(-6px); }
-}
-
-@keyframes fadeHint {
-    to { opacity: 0; }
-}
+@keyframes fadeHint { to { opacity: 0; } }
 
 /* LILIES AND PETALS */
 .lily, .petal {
     position: absolute;
     opacity: 0.9;
     pointer-events: none;
-    will-change: transform;
 }
 
 .lily { width: 50px; animation-name: floatDown; animation-timing-function: linear; animation-iteration-count: infinite; }
 .petal { width: 40px; animation-name: fall; animation-timing-function: linear; animation-iteration-count: 1; }
 
 @keyframes floatDown {
-    0% { transform: translateY(0px) translateX(0px) rotate(0deg); }
-    25% { transform: translateY(25vh) translateX(10px) rotate(90deg); }
-    50% { transform: translateY(50vh) translateX(-10px) rotate(180deg); }
-    75% { transform: translateY(75vh) translateX(5px) rotate(270deg); }
-    100% { transform: translateY(100vh) translateX(0px) rotate(360deg); }
-}
-
-@keyframes fall {
     0% { transform: translateY(0px) rotate(0deg); }
-    100% { transform: translateY(100vh) rotate(var(--rotate-deg)); }
+    100% { transform: translateY(100vh) rotate(360deg); }
 }
 
-/* PETAL SPARKLE TRAIL */
-.petalTrail {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    background: radial-gradient(circle, #fff 0%, #ffb6c4 80%);
-    border-radius: 50%;
-    pointer-events: none;
-    opacity: 0.8;
-    animation: trailFade 0.6s forwards;
-    z-index: 50;
+/* FALL FROM PHOTO */
+@keyframes fallFromPhoto {
+    0% { transform: translateY(0px) rotate(0deg); }
+    100% { transform: translateY(260px) rotate(var(--rotate-deg)); } 
 }
 
-@keyframes trailFade {
-    0% { opacity: 0.8; transform: scale(1); }
-    100% { opacity: 0; transform: scale(0.3); }
-}
-
-/* SPARKLE ANIMATION */
+/* SPARKLE */
 @keyframes sparkle {
     0% { transform: scale(0.3) rotate(0deg); opacity: 1; }
     50% { transform: scale(1) rotate(180deg); opacity: 0.8; }
@@ -239,17 +217,6 @@ button {
     pointer-events: none;
     animation: sparkle 0.8s ease-out forwards;
     z-index: 100;
-}
-
-/* MOBILE ADJUSTMENTS */
-@media (max-width: 600px) {
-    .lily { width: 35px !important; }
-    .petal { width: 30px !important; }
-
-    .container { max-height: calc(100vh - 20px); padding: 15px; margin-top: 0; margin-bottom: 10px; }
-    .gallery img { width: 150px; height: 200px; }
-    .buttons { height: 80px; margin-top: 10px; margin-bottom: 0; }
-    #hiddenMessageContainer { max-height: 150px; overflow-y: auto; }
 }
 </style>
 </head>
@@ -295,6 +262,7 @@ button {
                 I will always love you baby even on the days it feels hard for both of us to understand each other we will get through thick and thin together and I know you feel the same. Please remember I’m still the same boy you fell in love with. We are going to close the distance and live the life we want together. Happy valentines my love you really do mean the world to me.
             </div>
         </div>
+        <div id="scrollHint">⬆️⬇️ Scroll to read 💕</div>
     </div>
 </div>
 
@@ -339,16 +307,19 @@ function moveNo() {
     noBtn.style.top = Math.random() * maxY + "px";
 }
 
-/* YES BUTTON WITH MUSIC & SPARKLES */
+/* YES BUTTON WITH MUSIC & PINK PULSE + INTERACTIVE GLOW */
 const yesBtn = document.getElementById("yesBtn");
 const music = document.getElementById("bgMusic");
+music.volume = 0.4;
 
 yesBtn.addEventListener("click", () => {
     document.getElementById("celebration").style.display = "block";
     createPetalsFromPhotos(); 
     createLiliesFromPhotos(); 
+    glowGalleryPhotos(); // start interactive glow
     setTimeout(() => {
         document.getElementById("hiddenMessageContainer").style.display = "block";
+        document.getElementById("scrollHint").style.display = "block";
     }, 5000);
 
     // Sparkles
@@ -361,37 +332,47 @@ yesBtn.addEventListener("click", () => {
         setTimeout(() => sparkle.remove(), 800);
     }
 
-    // Music fade in/out after 2 min
-    music.volume = 0;
     music.play();
-    let volume = 0;
-    const fadeInInterval = setInterval(() => {
-        if(volume < 0.3){
-            volume += 0.01;
-            music.volume = volume;
-        } else {
-            clearInterval(fadeInInterval);
-            setTimeout(() => {
-                const fadeOutInterval = setInterval(() => {
-                    if(volume > 0){
-                        volume -= 0.01;
-                        music.volume = Math.max(volume,0);
-                    } else {
-                        clearInterval(fadeOutInterval);
-                        music.pause();
-                    }
-                }, 100);
-            }, 120000); // 2 minutes
-        }
-    }, 100);
 });
+
+/* INTERACTIVE PINK GLOW */
+function glowGalleryPhotos() {
+    const photos = document.querySelectorAll('.gallery img');
+    
+    photos.forEach(photo => {
+        photo.style.animation = "pinkPulse 1.5s ease-in-out infinite";
+    });
+
+    const observerInterval = setInterval(() => {
+        const petalsLilies = [...document.querySelectorAll('.petal'), ...document.querySelectorAll('.lily')];
+
+        petalsLilies.forEach(el => {
+            const rectEl = el.getBoundingClientRect();
+
+            photos.forEach(photo => {
+                const rectPhoto = photo.getBoundingClientRect();
+                
+                if(rectEl.left + rectEl.width > rectPhoto.left &&
+                   rectEl.left < rectPhoto.right &&
+                   rectEl.top + rectEl.height > rectPhoto.top &&
+                   rectEl.top < rectPhoto.bottom) {
+                    photo.style.boxShadow = "0 0 50px #ff69b4";
+                    photo.style.transform = "scale(1.05)";
+                    setTimeout(() => {
+                        photo.style.boxShadow = "";
+                        photo.style.transform = "";
+                    }, 400);
+                }
+            });
+        });
+    }, 50);
+}
 
 /* CONSTANT SCREEN LILIES */
 function createLilies() {
-    const maxLilies = window.innerWidth < 600 ? 5 : 8;
     setInterval(() => {
         const lilies = document.querySelectorAll('.lily');
-        if (lilies.length >= maxLilies) return;
+        if (lilies.length >= 8) return;
         const lily = document.createElement("img");
         lily.src = "lily.png";
         lily.classList.add("lily");
@@ -405,7 +386,7 @@ function createLilies() {
 
 /* CONSTANT SCREEN PETALS */
 function createPetals() {
-    const maxPetals = window.innerWidth < 600 ? 15 : 25;
+    const maxPetals = 25;
     setInterval(() => {
         const petals = document.querySelectorAll('.petal');
         if (petals.length >= maxPetals) return;
@@ -417,26 +398,10 @@ function createPetals() {
         petal.style.setProperty('--rotate-deg', Math.floor(90+Math.random()*270)+'deg');
         petal.style.animationDuration = (5+Math.random()*3) + "s";
         document.body.appendChild(petal);
-
-        // Sparkle trail interval
-        const trailInterval = setInterval(() => {
-            const trail = document.createElement("div");
-            trail.classList.add("petalTrail");
-            const petalRect = petal.getBoundingClientRect();
-            trail.style.left = petalRect.left + Math.random()*10 + "px";
-            trail.style.top = petalRect.top + Math.random()*10 + "px";
-            document.body.appendChild(trail);
-            setTimeout(() => trail.remove(), 600);
-        }, 100);
-
-        setTimeout(() => {
-            clearInterval(trailInterval);
-            petal.remove();
-        }, parseFloat(petal.style.animationDuration)*1000);
     }, 400);
 }
 
-/* EXTRA petals from photos on YES */
+/* PETALS FALLING FROM PHOTOS ON YES */
 function createPetalsFromPhotos() {
     const galleryPhotos = document.querySelectorAll('.gallery img');
     setInterval(() => {
@@ -448,24 +413,9 @@ function createPetalsFromPhotos() {
         petal.style.left = rect.left + Math.random()*rect.width + "px";
         petal.style.top = rect.top + "px";
         petal.style.setProperty('--rotate-deg', Math.floor(90+Math.random()*270)+'deg');
-        petal.style.animationDuration = (5+Math.random()*3) + "s";
+        petal.style.animationName = "fallFromPhoto";
+        petal.style.animationDuration = (4+Math.random()*2) + "s";
         document.body.appendChild(petal);
-
-        // Sparkle trail interval
-        const trailInterval = setInterval(() => {
-            const trail = document.createElement("div");
-            trail.classList.add("petalTrail");
-            const petalRect = petal.getBoundingClientRect();
-            trail.style.left = petalRect.left + Math.random()*10 + "px";
-            trail.style.top = petalRect.top + Math.random()*10 + "px";
-            document.body.appendChild(trail);
-            setTimeout(() => trail.remove(), 600);
-        }, 100);
-
-        setTimeout(() => {
-            clearInterval(trailInterval);
-            petal.remove();
-        }, parseFloat(petal.style.animationDuration)*1000);
     }, 300);
 }
 
@@ -482,7 +432,6 @@ function createLiliesFromPhotos() {
         lily.style.top = rect.top + "px";
         lily.style.animationDuration = (8+Math.random()*3) + "s";
         document.body.appendChild(lily);
-        setTimeout(() => lily.remove(), parseFloat(lily.style.animationDuration) * 1000);
     }, 4000);
 }
 </script>
