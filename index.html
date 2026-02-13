@@ -18,8 +18,32 @@ body {
     min-height: 100vh;
 }
 
-/* Envelope Intro */
+/* Password Screen Centered */
+#passwordScreen {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(135deg, #ffb6c1, #ffc0cb);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 20;
+}
+
+input {
+    padding: 12px;
+    border-radius: 25px;
+    border: none;
+    text-align: center;
+    width: 200px;
+}
+
+/* Envelope Intro (hidden initially) */
 #intro {
+    display: none;
     width: 100%;
     min-height: 100vh;
     background: linear-gradient(135deg, #ffb6c1, #ffc0cb);
@@ -41,32 +65,8 @@ body {
 .fadeOut { animation: fadeOut 1s forwards; }
 @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
 
-/* Password Screen Centered */
-#passwordScreen {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: linear-gradient(135deg, #ffb6c1, #ffc0cb);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    z-index: 20;
-}
-
-input {
-    padding: 12px;
-    border-radius: 25px;
-    border: none;
-    text-align: center;
-    width: 200px;
-}
-
-/* Main Content */
-#mainContent { display: none; padding: 20px; }
+/* Main Content Centered */
+#mainContent { display: none; padding: 20px; display: flex; justify-content: center; align-items: center; flex-direction: column; }
 
 .container {
     margin: auto;
@@ -133,7 +133,7 @@ button {
     font-size: 1.4rem;
 }
 
-/* Hidden Message Vertical Scroll */
+/* Hidden Message Scrollable & Smooth */
 #hiddenMessageContainer {
     display: none;
     margin-top: 20px;
@@ -142,6 +142,10 @@ button {
     border-radius: 15px;
     overflow-y: auto;
     max-height: 180px;
+
+    /* Smooth scroll */
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch; /* mobile smooth */
 }
 
 #hiddenMessage {
@@ -191,11 +195,7 @@ button {
 
 <body>
 
-<div id="intro">
-    <h2>Tap To Open 💌</h2>
-    <img src="envelope.png" id="envelope">
-</div>
-
+<!-- PASSWORD PROMPT FIRST -->
 <div id="passwordScreen">
     <h2>Enter The Secret Word 💕</h2>
     <input type="password" id="passwordInput" placeholder="Password">
@@ -204,12 +204,19 @@ button {
     <p id="error" style="color:red;"></p>
 </div>
 
+<!-- Envelope (shown after correct password) -->
+<div id="intro">
+    <h2>Tap To Open 💌</h2>
+    <img src="envelope.png" id="envelope">
+</div>
+
+<!-- Main Page -->
 <div id="mainContent">
     <div class="container">
         <h2>Veerena 🌸</h2>
         <p>Will you be my Valentine?</p>
 
-        <!-- Gallery: only 2 photos -->
+        <!-- Gallery: 2 photos -->
         <div class="gallery">
             <img src="photo1.jpg">
             <img src="photo2.jpg">
@@ -224,7 +231,7 @@ button {
             I will never leave you 💗🌷
         </div>
 
-        <!-- Hidden Message Vertical Scroll -->
+        <!-- Hidden Message Scrollable -->
         <div id="hiddenMessageContainer">
             <div id="hiddenMessage">
                 I will always love you baby even on the days it feels hard for both of us to understand each other we will get through thick and thin together and I know you feel the same. Please remember I’m still the same boy you fell in love with. We are going to close the distance and live the life we want together. Happy valentines my love you really do mean the world to me.
@@ -240,26 +247,26 @@ button {
 
 <script>
 
-/* Envelope */
-document.getElementById("envelope").addEventListener("click", () => {
-    document.getElementById("intro").classList.add("fadeOut");
-    setTimeout(() => {
-        document.getElementById("passwordScreen").style.display = "flex"; // flex for centering
-    }, 1000);
-});
-
-/* Password */
+/* PASSWORD FIRST */
 const correctPassword = "my love";
 
 function checkPassword() {
     if(document.getElementById("passwordInput").value === correctPassword) {
         document.getElementById("passwordScreen").style.display = "none";
-        document.getElementById("mainContent").style.display = "block";
-        createLilies();
+        document.getElementById("intro").style.display = "flex"; // show envelope
     } else {
         document.getElementById("error").innerText = "Wrong password 💔";
     }
 }
+
+/* Envelope Click */
+document.getElementById("envelope").addEventListener("click", () => {
+    document.getElementById("intro").classList.add("fadeOut");
+    setTimeout(() => {
+        document.getElementById("mainContent").style.display = "flex";
+        createLilies();
+    }, 1000);
+});
 
 /* Runaway No */
 const noBtn = document.getElementById("noBtn");
@@ -341,4 +348,5 @@ function createPetals() {
 
 </body>
 </html>
+
 
