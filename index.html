@@ -3,458 +3,354 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For Veerena 💕</title>
+<title>For Veerena ❤️</title>
 
 <style>
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+* { margin:0; padding:0; box-sizing:border-box; }
 
 body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #ffc0cb, #ffe4ec);
-    overflow: hidden;
-    text-align: center;
-    color: #ff4d88;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    font-family: 'Georgia', serif;
+    background: radial-gradient(circle at top, #ffe6f2, #ffc0dd);
+    height:100vh;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
 }
 
-/* PASSWORD SCREEN CENTERED */
-#passwordScreen {
-    display: flex;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: linear-gradient(135deg, #ffb6c1, #ffc0cb);
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    z-index: 20;
+/* CENTER EVERYTHING */
+.container {
+    width:100%;
+    max-width:500px;
+    padding:20px;
+}
+
+/* PASSWORD SCREEN */
+.password-screen {
+    position:absolute;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#ffe6f2,#ffc0dd);
+    z-index:100;
+}
+
+.password-box {
+    background:white;
+    padding:40px;
+    border-radius:20px;
+    box-shadow:0 0 30px rgba(255,105,180,.4);
 }
 
 input {
-    padding: 12px;
-    border-radius: 25px;
-    border: none;
-    text-align: center;
-    width: 200px;
+    padding:10px;
+    margin-top:10px;
+    border-radius:8px;
+    border:1px solid pink;
 }
 
-/* ENVELOPE INTRO */
-#intro {
-    display: none;
-    width: 100%;
-    height: 100vh;
-    background: linear-gradient(135deg, #ffb6c1, #ffc0cb);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    z-index: 10;
+/* ENVELOPE */
+.envelope-wrapper {
+    position:relative;
+    display:none;
 }
 
-#envelope {
-    width: 200px;
-    cursor: pointer;
-    transition: transform 0.6s ease;
+.envelope-glow {
+    position:absolute;
+    width:280px;
+    height:180px;
+    background:radial-gradient(circle,rgba(255,105,180,.5),transparent 70%);
+    filter:blur(40px);
+    animation:glowPulse 3s infinite;
 }
 
-#envelope:hover { transform: scale(1.1); }
-
-.fadeOut { animation: fadeOut 1s forwards; }
-@keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
-
-/* MAIN CONTENT CENTERED */
-#mainContent { 
-    display: none; 
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+@keyframes glowPulse {
+    0%,100%{opacity:.6;transform:scale(1);}
+    50%{opacity:1;transform:scale(1.1);}
 }
 
-/* CONTAINER */
-.container {
-    margin: 0 auto;
-    padding: 25px;
-    background: rgba(255,255,255,0.75);
-    border-radius: 25px;
-    box-shadow: 0 10px 40px rgba(255,105,180,0.3);
-    max-width: 420px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.envelope {
+    width:260px;
+    height:160px;
+    background:#ffb6d9;
+    position:relative;
+    border-radius:10px;
+    cursor:pointer;
+    transform:translateY(40px) scale(.95);
+    opacity:0;
+    animation:envelopeEntrance 1.8s cubic-bezier(.22,1,.36,1) forwards;
 }
 
-/* CUSTOM TEXT BOX */
-#customTextBoxContainer { margin-bottom: 15px; width: 100%; }
-#customTextBox {
-    width: 100%;
-    border-radius: 15px;
-    border: 2px solid #ff69b4;
-    padding: 10px;
-    resize: none;
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.95rem;
-    height: 120px;
-    line-height: 1.4;
+@keyframes envelopeEntrance {
+    to { opacity:1; transform:translateY(0) scale(1); }
 }
+
+.flap {
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:#ff8fcf;
+    transform-origin:top;
+    transition:1.2s cubic-bezier(.22,1,.36,1);
+}
+
+.letter {
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    transition:1.2s cubic-bezier(.22,1,.36,1);
+}
+
+.envelope.open .flap { transform:rotateX(180deg); }
+.envelope.open .letter { transform:translateY(-120px); }
 
 /* GALLERY */
 .gallery {
-    display: flex;
-    gap: 15px;
-    margin: 0 0 20px 0;
-    justify-content: center;
+    display:none;
+    margin-top:10px;
 }
 
 .gallery img {
-    width: 200px;
-    height: 260px;
-    object-fit: cover;
-    border-radius: 20px;
-    border: 3px solid #ff69b4;
-    transition: box-shadow 0.3s, transform 0.3s;
-}
-
-/* Continuous pink glow pulsing */
-@keyframes pinkPulse {
-    0% { box-shadow: 0 0 0px #ff69b4; transform: scale(1); }
-    50% { box-shadow: 0 0 25px #ff69b4; transform: scale(1.02); }
-    100% { box-shadow: 0 0 0px #ff69b4; transform: scale(1); }
+    width:140px;
+    border-radius:15px;
+    margin:5px;
 }
 
 /* BUTTONS */
-.buttons {
-    position: relative;
-    height: 120px;
-    width: 100%;
-    margin-bottom: 20px;
-    overflow: hidden;
-}
-
 button {
-    padding: 12px 25px;
-    border-radius: 30px;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
+    padding:12px 20px;
+    border:none;
+    border-radius:25px;
+    margin:10px;
+    font-size:16px;
+    cursor:pointer;
+    background:#ff69b4;
+    color:white;
+    box-shadow:0 0 15px pink;
+    transition:.3s;
 }
 
-#yesBtn {
-    background: #ff69b4;
-    color: white;
-    position: absolute;
-    left: 20%;
+button:hover {
+    transform:scale(1.1);
+    box-shadow:0 0 25px hotpink;
 }
 
+/* NO BUTTON STAYS INSIDE */
 #noBtn {
-    background: white;
-    color: #ff4d88;
-    border: 2px solid #ff69b4;
-    position: absolute;
-    left: 55%;
+    position:relative;
 }
 
-/* CELEBRATION */
-#celebration {
-    display: none;
-    margin-top: 20px;
-    font-size: 1.4rem;
+/* HIDDEN MESSAGE */
+.hidden-message {
+    display:none;
+    max-height:150px;
+    overflow-y:auto;
+    margin-top:15px;
+    padding:10px;
+    background:white;
+    border-radius:15px;
+    box-shadow:0 0 20px pink;
 }
 
-/* HIDDEN MESSAGE SCROLLABLE */
-#hiddenMessageContainer {
-    display: none;
-    margin-top: 20px;
-    padding: 10px;
-    background: rgba(255,182,193,0.4);
-    border-radius: 15px;
-    overflow-y: auto;
-    max-height: 180px;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    position: relative;
+/* SCROLL HINT */
+.scroll-hint {
+    font-size:14px;
+    color:hotpink;
+    margin-top:5px;
+    opacity:1;
+    transition:1s;
 }
 
-/* SCROLL HINT BELOW MESSAGE */
-#scrollHint {
-    display: none;
-    margin-top: 5px;
-    font-size: 1.2rem;
-    opacity: 0.6;
-    animation: fadeHint 1s forwards 10s;
+/* PETALS */
+.background-petals img {
+    position:fixed;
+    width:80px;
+    opacity:.6;
+    animation:drift linear infinite;
 }
 
-@keyframes fadeHint { to { opacity: 0; } }
-
-/* LILIES AND PETALS */
-.lily, .petal {
-    position: absolute;
-    opacity: 0.9;
-    pointer-events: none;
-}
-
-.lily { width: 50px; animation-name: floatDown; animation-timing-function: linear; animation-iteration-count: infinite; }
-.petal { width: 40px; animation-name: fall; animation-timing-function: linear; animation-iteration-count: 1; }
-
-@keyframes floatDown {
-    0% { transform: translateY(0px) rotate(0deg); }
-    100% { transform: translateY(100vh) rotate(360deg); }
-}
-
-/* FALL FROM PHOTO */
-@keyframes fallFromPhoto {
-    0% { transform: translateY(0px) rotate(0deg); }
-    100% { transform: translateY(260px) rotate(var(--rotate-deg)); } 
+@keyframes drift {
+    0%{transform:translateY(-100px) rotate(0);}
+    100%{transform:translateY(110vh) rotate(360deg);}
 }
 
 /* SPARKLE */
-@keyframes sparkle {
-    0% { transform: scale(0.3) rotate(0deg); opacity: 1; }
-    50% { transform: scale(1) rotate(180deg); opacity: 0.8; }
-    100% { transform: scale(0.1) rotate(360deg); opacity: 0; }
+.sparkle {
+    position:fixed;
+    width:6px;
+    height:6px;
+    background:pink;
+    border-radius:50%;
+    box-shadow:0 0 10px pink;
+    animation:sparkleAnim 2s forwards;
 }
 
-.sparkle {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    background: radial-gradient(circle, #fff 0%, #ff69b4 80%);
-    border-radius: 50%;
-    pointer-events: none;
-    animation: sparkle 0.8s ease-out forwards;
-    z-index: 100;
+@keyframes sparkleAnim {
+    0%{opacity:1;}
+    100%{opacity:0; transform:scale(3);}
 }
+
+/* FLOATING STARS */
+.star {
+    position:fixed;
+    width:4px;
+    height:4px;
+    background:white;
+    border-radius:50%;
+    animation:floatStar 6s infinite ease-in-out;
+    opacity:.7;
+}
+
+@keyframes floatStar {
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-20px);}
+}
+
 </style>
 </head>
+
 <body>
 
-<!-- PASSWORD SCREEN -->
-<div id="passwordScreen">
-    <h2>Enter The Secret Word 💕</h2>
-    <input type="password" id="passwordInput" placeholder="Password">
-    <br><br>
-    <button onclick="checkPassword()">Enter</button>
-    <p id="error" style="color:red;"></p>
-</div>
-
-<!-- ENVELOPE -->
-<div id="intro">
-    <h2>Tap To Open 💌</h2>
-    <img src="envelope.png" id="envelope">
-</div>
-
-<!-- MAIN CONTENT -->
-<div id="mainContent">
-    <div class="container">
-        <h2>Veerena 🌸</h2>
-        <p>Will you be my Valentine?</p>
-
-        <!-- CUSTOM TEXT BOX WITH YOUR MESSAGE -->
-        <div id="customTextBoxContainer">
-            <textarea id="customTextBox">
-This took me a bit longer than you might think to make baby, I know you said didn't want me buying you anything and I couldn't just not get you something for valentines day regardless of what we have going on so I made this for you. Every line of code is for you Veerena this is your website. Im sorry if it's not that extravagant but I hope you enjoy it and look at it from time to time. I love you please enjoy.
-            </textarea>
-        </div>
-
-        <div class="gallery">
-            <img src="photo1.jpg">
-            <img src="photo2.jpg">
-        </div>
-
-        <div class="buttons">
-            <button id="yesBtn">Yes 💖</button>
-            <button id="noBtn">No 😢</button>
-        </div>
-
-        <div id="celebration">
-            I will never leave you 💗🌷
-        </div>
-
-        <div id="hiddenMessageContainer">
-            <div id="hiddenMessage">
-                I will always love you baby even on the days it feels hard for both of us to understand each other we will get through thick and thin together and I know you feel the same. Please remember I’m still the same boy you fell in love with. We are going to close the distance and live the life we want together. Happy valentines my love you really do mean the world to me.
-            </div>
-        </div>
-        <div id="scrollHint">⬆️⬇️ Scroll to read 💕</div>
+<div class="password-screen">
+    <div class="password-box">
+        <h2>Enter Password</h2>
+        <input type="password" id="passwordInput">
+        <br><br>
+        <button onclick="checkPassword()">Enter</button>
     </div>
 </div>
 
-<audio id="bgMusic">
-    <source src="love.mp3" type="audio/mpeg">
-</audio>
+<div class="container">
+
+<div class="envelope-wrapper">
+    <div class="envelope-glow"></div>
+    <div class="envelope" onclick="openEnvelope()">
+        <div class="flap"></div>
+        <div class="letter">Open Me 💌</div>
+    </div>
+</div>
+
+<div class="gallery">
+    <p>This took me a bit longer than you might think to make baby, I know you said didn't want me buying you anything and I couldn't just not get you something for valentines day regardless of what we have going on so I made this for you. Every line of code is for you Veerena this is your website. Im sorry if its not that extravagant but I hope you enjoy it and look at it from time to time. I love you please enjoy.</p>
+
+    <img src="photo1.jpg">
+    <img src="photo2.jpg">
+
+    <h2>Will you be my Valentine Veerena? ❤️</h2>
+    <button onclick="yesClicked()">Yes</button>
+    <button id="noBtn" onclick="moveNo()">No</button>
+
+    <div class="hidden-message" id="hiddenMessage">
+        <p>Your 74 word hidden message goes here exactly how you wrote it ❤️</p>
+    </div>
+
+    <div class="scroll-hint" id="scrollHint">Scroll to read 💕</div>
+</div>
+
+</div>
+
+<div class="background-petals"></div>
+
+<audio id="bgMusic" src="love.mp3"></audio>
 
 <script>
-const correctPassword = "my love";
 
-/* PASSWORD */
-function checkPassword() {
-    if(document.getElementById("passwordInput").value === correctPassword) {
-        document.getElementById("passwordScreen").style.display = "none";
-        document.getElementById("intro").style.display = "flex";
-    } else {
-        document.getElementById("error").innerText = "Wrong password 💔";
+function checkPassword(){
+    if(document.getElementById("passwordInput").value === "my love"){
+        document.querySelector(".password-screen").style.display="none";
+        document.querySelector(".envelope-wrapper").style.display="flex";
+        fadeInMusic();
     }
 }
 
-/* ENVELOPE CLICK */
-document.getElementById("envelope").addEventListener("click", () => {
-    document.getElementById("intro").classList.add("fadeOut");
-    setTimeout(() => {
-        document.getElementById("mainContent").style.display = "flex";
-        createLilies();   
-        createPetals();   
-    }, 1000);
-});
-
-/* NO BUTTON RUNAWAY INSIDE CONTAINER */
-const noBtn = document.getElementById("noBtn");
-const buttonsContainer = document.querySelector('.buttons');
-
-noBtn.addEventListener("touchstart", moveNo);
-noBtn.addEventListener("mouseover", moveNo);
-
-function moveNo() {
-    const maxX = buttonsContainer.offsetWidth - noBtn.offsetWidth;
-    const maxY = buttonsContainer.offsetHeight - noBtn.offsetHeight;
-    noBtn.style.left = Math.random() * maxX + "px";
-    noBtn.style.top = Math.random() * maxY + "px";
+function openEnvelope(){
+    document.querySelector(".envelope").classList.add("open");
+    setTimeout(()=>{
+        document.querySelector(".gallery").style.display="block";
+    },1200);
 }
 
-/* YES BUTTON WITH MUSIC & PINK PULSE + INTERACTIVE GLOW */
-const yesBtn = document.getElementById("yesBtn");
-const music = document.getElementById("bgMusic");
-music.volume = 0.4;
+function moveNo(){
+    const btn=document.getElementById("noBtn");
+    btn.style.position="absolute";
+    btn.style.left=Math.random()*200+"px";
+    btn.style.top=Math.random()*100+"px";
+}
 
-yesBtn.addEventListener("click", () => {
-    document.getElementById("celebration").style.display = "block";
-    createPetalsFromPhotos(); 
-    createLiliesFromPhotos(); 
-    glowGalleryPhotos(); 
-    setTimeout(() => {
-        document.getElementById("hiddenMessageContainer").style.display = "block";
-        document.getElementById("scrollHint").style.display = "block";
-    }, 5000);
+function yesClicked(){
+    sparkleEffect();
+    setTimeout(()=>{
+        document.getElementById("hiddenMessage").style.display="block";
+    },5000);
 
-    // Sparkles
-    for(let i=0;i<8;i++){
-        const sparkle = document.createElement("div");
-        sparkle.classList.add("sparkle");
-        sparkle.style.left = yesBtn.offsetLeft + yesBtn.offsetWidth/2 + (Math.random()*80-40) + "px";
-        sparkle.style.top = yesBtn.offsetTop + yesBtn.offsetHeight/2 + (Math.random()*80-40) + "px";
-        document.body.appendChild(sparkle);
-        setTimeout(() => sparkle.remove(), 800);
+    setTimeout(()=>{
+        document.getElementById("scrollHint").style.opacity="0";
+    },10000);
+}
+
+function sparkleEffect(){
+    for(let i=0;i<15;i++){
+        const s=document.createElement("div");
+        s.className="sparkle";
+        s.style.left=Math.random()*window.innerWidth+"px";
+        s.style.top=Math.random()*window.innerHeight+"px";
+        document.body.appendChild(s);
+        setTimeout(()=>s.remove(),2000);
     }
+}
 
+/* PETALS SPAWN */
+setInterval(()=>{
+    const p=document.createElement("img");
+    p.src="petal.png";
+    p.style.left=Math.random()*window.innerWidth+"px";
+    p.style.animationDuration=(12+Math.random()*10)+"s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),22000);
+},2000);
+
+/* FLOATING STARS */
+for(let i=0;i<30;i++){
+    const star=document.createElement("div");
+    star.className="star";
+    star.style.left=Math.random()*100+"vw";
+    star.style.top=Math.random()*100+"vh";
+    document.body.appendChild(star);
+}
+
+/* MUSIC */
+const music=document.getElementById("bgMusic");
+
+function fadeInMusic(){
+    music.volume=0;
     music.play();
-});
-
-/* INTERACTIVE PINK GLOW */
-function glowGalleryPhotos() {
-    const photos = document.querySelectorAll('.gallery img');
-    
-    photos.forEach(photo => {
-        photo.style.animation = "pinkPulse 1.5s ease-in-out infinite";
-    });
-
-    const observerInterval = setInterval(() => {
-        const petalsLilies = [...document.querySelectorAll('.petal'), ...document.querySelectorAll('.lily')];
-
-        petalsLilies.forEach(el => {
-            const rectEl = el.getBoundingClientRect();
-
-            photos.forEach(photo => {
-                const rectPhoto = photo.getBoundingClientRect();
-                
-                if(rectEl.left + rectEl.width > rectPhoto.left &&
-                   rectEl.left < rectPhoto.right &&
-                   rectEl.top + rectEl.height > rectPhoto.top &&
-                   rectEl.top < rectPhoto.bottom) {
-                    photo.style.boxShadow = "0 0 50px #ff69b4";
-                    photo.style.transform = "scale(1.05)";
-                    setTimeout(() => {
-                        photo.style.boxShadow = "";
-                        photo.style.transform = "";
-                    }, 400);
-                }
-            });
-        });
-    }, 50);
+    let fade=setInterval(()=>{
+        if(music.volume<0.4){
+            music.volume+=0.02;
+        } else clearInterval(fade);
+    },200);
 }
 
-/* CONSTANT SCREEN LILIES */
-function createLilies() {
-    setInterval(() => {
-        const lilies = document.querySelectorAll('.lily');
-        if (lilies.length >= 8) return;
-        const lily = document.createElement("img");
-        lily.src = "lily.png";
-        lily.classList.add("lily");
-        lily.style.left = Math.random() * window.innerWidth + "px";
-        lily.style.top = "-60px";
-        lily.style.animationDuration = (10 + Math.random()*4) + "s";
-        document.body.appendChild(lily);
-        setTimeout(() => lily.remove(), parseFloat(lily.style.animationDuration) * 1000);
-    }, 3000);
+function fadeOutMusic(){
+    let fade=setInterval(()=>{
+        if(music.volume>0.02){
+            music.volume-=0.02;
+        } else {
+            music.pause();
+            clearInterval(fade);
+        }
+    },200);
 }
 
-/* CONSTANT SCREEN PETALS */
-function createPetals() {
-    const maxPetals = 25;
-    setInterval(() => {
-        const petals = document.querySelectorAll('.petal');
-        if (petals.length >= maxPetals) return;
-        const petal = document.createElement("img");
-        petal.src = "petal.png";
-        petal.classList.add("petal");
-        petal.style.left = Math.random() * window.innerWidth + "px";
-        petal.style.top = "-40px";
-        petal.style.setProperty('--rotate-deg', Math.floor(90+Math.random()*270)+'deg');
-        petal.style.animationDuration = (5+Math.random()*3) + "s";
-        document.body.appendChild(petal);
-    }, 400);
-}
+setTimeout(fadeOutMusic,120000);
 
-/* PETALS FALLING FROM PHOTOS ON YES */
-function createPetalsFromPhotos() {
-    const galleryPhotos = document.querySelectorAll('.gallery img');
-    setInterval(() => {
-        const photo = galleryPhotos[Math.floor(Math.random()*galleryPhotos.length)];
-        const rect = photo.getBoundingClientRect();
-        const petal = document.createElement("img");
-        petal.src = "petal.png";
-        petal.classList.add("petal");
-        petal.style.left = rect.left + Math.random()*rect.width + "px";
-        petal.style.top = rect.top + "px";
-        petal.style.setProperty('--rotate-deg', Math.floor(90+Math.random()*270)+'deg');
-        petal.style.animationName = "fallFromPhoto";
-        petal.style.animationDuration = (4+Math.random()*2) + "s";
-        document.body.appendChild(petal);
-    }, 300);
-}
-
-/* EXTRA lilies from photos on YES */
-function createLiliesFromPhotos() {
-    const galleryPhotos = document.querySelectorAll('.gallery img');
-    setInterval(() => {
-        const photo = galleryPhotos[Math.floor(Math.random()*galleryPhotos.length)];
-        const rect = photo.getBoundingClientRect();
-        const lily = document.createElement("img");
-        lily.src = "lily.png";
-        lily.classList.add("lily");
-        lily.style.left = rect.left + Math.random()*rect.width + "px";
-        lily.style.top = rect.top + "px";
-        lily.style.animationDuration = (8+Math.random()*3) + "s";
-        document.body.appendChild(lily);
-    }, 4000);
-}
 </script>
+
 </body>
 </html>
