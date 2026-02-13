@@ -147,7 +147,7 @@ button {
     font-size: 1.4rem;
 }
 
-/* HIDDEN MESSAGE SCROLLABLE WITH SCROLL HINT */
+/* HIDDEN MESSAGE SCROLLABLE WITH SCROLL HINT BELOW TEXT */
 #hiddenMessageContainer {
     display: none;
     margin-top: 20px;
@@ -169,7 +169,7 @@ button {
     transform: translateX(-50%);
     font-size: 1.2rem;
     opacity: 0.6;
-    animation: bounce 1.2s infinite;
+    animation: bounce 1.2s infinite, fadeHint 1s forwards 10s;
 }
 
 @keyframes bounce {
@@ -177,10 +177,8 @@ button {
     50% { transform: translateX(-50%) translateY(-6px); }
 }
 
-#hiddenMessage {
-    display: block;
-    font-size: 1rem;
-    white-space: normal;
+@keyframes fadeHint {
+    to { opacity: 0; }
 }
 
 /* LILIES AND PETALS */
@@ -192,7 +190,7 @@ button {
 }
 
 .lily { width: 50px; animation-name: floatDown; animation-timing-function: linear; animation-iteration-count: infinite; }
-.petal { width: 25px; animation-name: fall; animation-timing-function: linear; animation-iteration-count: 1; }
+.petal { width: 40px; animation-name: fall; animation-timing-function: linear; animation-iteration-count: 1; }
 
 @keyframes floatDown {
     0% { transform: translateY(0px) translateX(0px) rotate(0deg); }
@@ -205,6 +203,24 @@ button {
 @keyframes fall {
     0% { transform: translateY(0px) rotate(0deg); }
     100% { transform: translateY(100vh) rotate(var(--rotate-deg)); }
+}
+
+/* PETAL SPARKLE TRAIL */
+.petalTrail {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: radial-gradient(circle, #fff 0%, #ffb6c4 80%);
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0.8;
+    animation: trailFade 0.6s forwards;
+    z-index: 50;
+}
+
+@keyframes trailFade {
+    0% { opacity: 0.8; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0.3); }
 }
 
 /* SPARKLE ANIMATION */
@@ -228,40 +244,15 @@ button {
 /* MOBILE ADJUSTMENTS */
 @media (max-width: 600px) {
     .lily { width: 35px !important; }
-    .petal { width: 18px !important; }
+    .petal { width: 30px !important; }
 
-    #mainContent {
-        max-height: 100vh;
-        overflow: hidden; 
-        justify-content: flex-start;
-    }
-
-    .container {
-        max-height: calc(100vh - 20px);
-        padding: 15px;
-        margin-top: 0;
-        margin-bottom: 10px;
-    }
-
-    .gallery img {
-        width: 150px;
-        height: 200px;
-    }
-
-    .buttons {
-        height: 80px;
-        margin-top: 10px;
-        margin-bottom: 0;
-    }
-
-    #hiddenMessageContainer {
-        max-height: 150px;
-        overflow-y: auto;
-    }
+    .container { max-height: calc(100vh - 20px); padding: 15px; margin-top: 0; margin-bottom: 10px; }
+    .gallery img { width: 150px; height: 200px; }
+    .buttons { height: 80px; margin-top: 10px; margin-bottom: 0; }
+    #hiddenMessageContainer { max-height: 150px; overflow-y: auto; }
 }
 </style>
 </head>
-
 <body>
 
 <!-- PASSWORD SCREEN -->
@@ -370,7 +361,7 @@ yesBtn.addEventListener("click", () => {
         setTimeout(() => sparkle.remove(), 800);
     }
 
-    // Music fade in/out
+    // Music fade in/out after 2 min
     music.volume = 0;
     music.play();
     let volume = 0;
@@ -390,7 +381,7 @@ yesBtn.addEventListener("click", () => {
                         music.pause();
                     }
                 }, 100);
-            }, 15000);
+            }, 120000); // 2 minutes
         }
     }, 100);
 });
@@ -422,11 +413,26 @@ function createPetals() {
         petal.src = "petal.png";
         petal.classList.add("petal");
         petal.style.left = Math.random() * window.innerWidth + "px";
-        petal.style.top = "-35px";
+        petal.style.top = "-40px";
         petal.style.setProperty('--rotate-deg', Math.floor(90+Math.random()*270)+'deg');
         petal.style.animationDuration = (5+Math.random()*3) + "s";
         document.body.appendChild(petal);
-        setTimeout(() => petal.remove(), parseFloat(petal.style.animationDuration)*1000);
+
+        // Sparkle trail interval
+        const trailInterval = setInterval(() => {
+            const trail = document.createElement("div");
+            trail.classList.add("petalTrail");
+            const petalRect = petal.getBoundingClientRect();
+            trail.style.left = petalRect.left + Math.random()*10 + "px";
+            trail.style.top = petalRect.top + Math.random()*10 + "px";
+            document.body.appendChild(trail);
+            setTimeout(() => trail.remove(), 600);
+        }, 100);
+
+        setTimeout(() => {
+            clearInterval(trailInterval);
+            petal.remove();
+        }, parseFloat(petal.style.animationDuration)*1000);
     }, 400);
 }
 
@@ -444,7 +450,22 @@ function createPetalsFromPhotos() {
         petal.style.setProperty('--rotate-deg', Math.floor(90+Math.random()*270)+'deg');
         petal.style.animationDuration = (5+Math.random()*3) + "s";
         document.body.appendChild(petal);
-        setTimeout(() => petal.remove(), parseFloat(petal.style.animationDuration)*1000);
+
+        // Sparkle trail interval
+        const trailInterval = setInterval(() => {
+            const trail = document.createElement("div");
+            trail.classList.add("petalTrail");
+            const petalRect = petal.getBoundingClientRect();
+            trail.style.left = petalRect.left + Math.random()*10 + "px";
+            trail.style.top = petalRect.top + Math.random()*10 + "px";
+            document.body.appendChild(trail);
+            setTimeout(() => trail.remove(), 600);
+        }, 100);
+
+        setTimeout(() => {
+            clearInterval(trailInterval);
+            petal.remove();
+        }, parseFloat(petal.style.animationDuration)*1000);
     }, 300);
 }
 
@@ -465,6 +486,5 @@ function createLiliesFromPhotos() {
     }, 4000);
 }
 </script>
-
 </body>
 </html>
