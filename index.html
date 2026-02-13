@@ -82,8 +82,11 @@ input {
     display: flex;
     overflow-x: auto;
     gap: 15px;
-    margin: 20px 0;
+    margin: 10px 0;
     scroll-snap-type: x mandatory;
+    justify-content: center;
+    align-items: flex-start;
+    position: relative;
 }
 
 .gallery img {
@@ -142,8 +145,6 @@ button {
     border-radius: 15px;
     overflow-y: auto;
     max-height: 180px;
-
-    /* Smooth scroll */
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch; /* mobile smooth */
 }
@@ -154,29 +155,18 @@ button {
     white-space: normal;
 }
 
-/* Lilies */
-.lily {
+/* Lilies and Petals */
+.lily, .petal {
     position: absolute;
-    width: 60px;
-    animation-name: floatDown;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    opacity: 0.8;
-    will-change: transform;
-}
-
-/* Petals */
-.petal {
-    position: absolute;
-    width: 35px;
-    animation-name: fall;
-    animation-timing-function: linear;
-    animation-iteration-count: 1;
     opacity: 0.9;
+    pointer-events: none;
     will-change: transform;
 }
 
-/* Lilies float down naturally */
+.lily { width: 50px; animation-name: floatDown; animation-timing-function: linear; animation-iteration-count: infinite; }
+.petal { width: 25px; animation-name: fall; animation-timing-function: linear; animation-iteration-count: 1; }
+
+/* Lilies float down */
 @keyframes floatDown {
     0% { transform: translateY(0px) translateX(0px) rotate(0deg); }
     25% { transform: translateY(25vh) translateX(10px) rotate(90deg); }
@@ -190,12 +180,18 @@ button {
     0% { transform: translateY(0px) rotate(0deg); }
     100% { transform: translateY(100vh) rotate(var(--rotate-deg)); }
 }
+
+/* Mobile Optimization */
+@media (max-width: 600px) {
+    .lily { width: 40px; }
+    .petal { width: 20px; }
+}
 </style>
 </head>
 
 <body>
 
-<!-- PASSWORD PROMPT FIRST -->
+<!-- PASSWORD PROMPT -->
 <div id="passwordScreen">
     <h2>Enter The Secret Word 💕</h2>
     <input type="password" id="passwordInput" placeholder="Password">
@@ -204,19 +200,18 @@ button {
     <p id="error" style="color:red;"></p>
 </div>
 
-<!-- Envelope (shown after correct password) -->
+<!-- Envelope -->
 <div id="intro">
     <h2>Tap To Open 💌</h2>
     <img src="envelope.png" id="envelope">
 </div>
 
-<!-- Main Page -->
+<!-- Main Content -->
 <div id="mainContent">
     <div class="container">
         <h2>Veerena 🌸</h2>
         <p>Will you be my Valentine?</p>
 
-        <!-- Gallery: 2 photos -->
         <div class="gallery">
             <img src="photo1.jpg">
             <img src="photo2.jpg">
@@ -246,29 +241,29 @@ button {
 </audio>
 
 <script>
-
-/* PASSWORD FIRST */
 const correctPassword = "my love";
 
+/* PASSWORD */
 function checkPassword() {
     if(document.getElementById("passwordInput").value === correctPassword) {
         document.getElementById("passwordScreen").style.display = "none";
-        document.getElementById("intro").style.display = "flex"; // show envelope
+        document.getElementById("intro").style.display = "flex";
     } else {
         document.getElementById("error").innerText = "Wrong password 💔";
     }
 }
 
-/* Envelope Click */
+/* ENVELOPE CLICK */
 document.getElementById("envelope").addEventListener("click", () => {
     document.getElementById("intro").classList.add("fadeOut");
     setTimeout(() => {
         document.getElementById("mainContent").style.display = "flex";
-        createLilies();
+        createLilies();   // constant screen lilies
+        createPetals();   // constant screen petals
     }, 1000);
 });
 
-/* Runaway No */
+/* NO BUTTON RUNAWAY */
 const noBtn = document.getElementById("noBtn");
 noBtn.addEventListener("touchstart", moveNo);
 noBtn.addEventListener("mouseover", moveNo);
@@ -287,66 +282,93 @@ const music = document.getElementById("bgMusic");
 yesBtn.addEventListener("click", () => {
     document.getElementById("celebration").style.display = "block";
     
-    music.volume = 0.3;  
-    music.play();         
+    music.volume = 0.3;
+    music.play();
 
-    createPetals();       
-    createLilies();       
+    createPetalsFromPhotos(); // extra petals from gallery photos
+    createLiliesFromPhotos(); // extra lilies from gallery photos
 
-    // Show hidden message after 5 seconds
     setTimeout(() => {
         document.getElementById("hiddenMessageContainer").style.display = "block";
     }, 5000);
 });
 
-/* Lilies falling from top */
+/* CONSTANT SCREEN LILIES */
 function createLilies() {
-    const maxLilies = 8; 
+    const maxLilies = window.innerWidth < 600 ? 5 : 8;
     setInterval(() => {
         const lilies = document.querySelectorAll('.lily');
         if (lilies.length >= maxLilies) return;
 
         const lily = document.createElement("img");
-        lily.src = "lily.png"; 
+        lily.src = "lily.png";
         lily.classList.add("lily");
         lily.style.left = Math.random() * window.innerWidth + "px";
-        lily.style.top = "-60px"; // start above the screen
-
-        const duration = (10 + Math.random() * 4) + "s"; 
-        lily.style.animationDuration = duration;
+        lily.style.top = "-60px";
+        lily.style.animationDuration = (10 + Math.random()*4) + "s";
 
         document.body.appendChild(lily);
-        setTimeout(() => lily.remove(), parseFloat(duration) * 1000);
-    }, 3000);
+        setTimeout(() => lily.remove(), parseFloat(lily.style.animationDuration) * 1000);
+    }, window.innerWidth < 600 ? 4000 : 3000);
 }
 
-/* Petals falling from top */
+/* CONSTANT SCREEN PETALS */
 function createPetals() {
-    const maxPetals = 25; 
+    const maxPetals = window.innerWidth < 600 ? 15 : 25;
     setInterval(() => {
         const petals = document.querySelectorAll('.petal');
         if (petals.length >= maxPetals) return;
 
         const petal = document.createElement("img");
-        petal.src = "petal.png"; 
+        petal.src = "petal.png";
         petal.classList.add("petal");
         petal.style.left = Math.random() * window.innerWidth + "px";
-        petal.style.top = "-35px"; // start above the screen
-
-        const rotateDeg = Math.floor(90 + Math.random() * 270);
-        petal.style.setProperty('--rotate-deg', rotateDeg + 'deg');
-
-        const duration = (5 + Math.random() * 3) + "s"; 
-        petal.style.animationDuration = duration;
+        petal.style.top = "-35px";
+        petal.style.setProperty('--rotate-deg', Math.floor(90+Math.random()*270)+'deg');
+        petal.style.animationDuration = (5+Math.random()*3) + "s";
 
         document.body.appendChild(petal);
-        setTimeout(() => petal.remove(), parseFloat(duration) * 1000);
-    }, 400);
+        setTimeout(() => petal.remove(), parseFloat(petal.style.animationDuration)*1000);
+    }, window.innerWidth < 600 ? 600 : 400);
 }
 
+/* EXTRA PETALS FALLING FROM PHOTOS ON YES */
+function createPetalsFromPhotos() {
+    const galleryPhotos = document.querySelectorAll('.gallery img');
+    setInterval(() => {
+        const photo = galleryPhotos[Math.floor(Math.random() * galleryPhotos.length)];
+        const rect = photo.getBoundingClientRect();
+        const petal = document.createElement("img");
+        petal.src = "petal.png";
+        petal.classList.add("petal");
+        petal.style.left = rect.left + Math.random()*rect.width + "px";
+        petal.style.top = rect.top + "px";
+        petal.style.setProperty('--rotate-deg', Math.floor(90+Math.random()*270)+'deg');
+        petal.style.animationDuration = (5+Math.random()*3) + "s";
+
+        document.body.appendChild(petal);
+        setTimeout(() => petal.remove(), parseFloat(petal.style.animationDuration)*1000);
+    }, 300);
+}
+
+/* EXTRA LILIES FALLING FROM PHOTOS ON YES */
+function createLiliesFromPhotos() {
+    const galleryPhotos = document.querySelectorAll('.gallery img');
+    setInterval(() => {
+        const photo = galleryPhotos[Math.floor(Math.random() * galleryPhotos.length)];
+        const rect = photo.getBoundingClientRect();
+        const lily = document.createElement("img");
+        lily.src = "lily.png";
+        lily.classList.add("lily");
+        lily.style.left = rect.left + Math.random()*rect.width + "px";
+        lily.style.top = rect.top + "px";
+        lily.style.animationDuration = (8+Math.random()*3) + "s";
+
+        document.body.appendChild(lily);
+        setTimeout(() => lily.remove(), parseFloat(lily.style.animationDuration)*1000);
+    }, 4000);
+}
 </script>
 
 </body>
 </html>
-
-
