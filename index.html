@@ -12,7 +12,7 @@ body {
     margin: 0;
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(135deg, #ffc0cb, #ffe4ec);
-    overflow-y: auto; /* allow vertical scroll */
+    overflow-y: auto;
     text-align: center;
     color: #ff4d88;
     min-height: 100vh;
@@ -159,18 +159,19 @@ button {
     will-change: transform;
 }
 
-/* Lilies float and drift naturally */
+/* Lilies float down naturally */
 @keyframes floatDown {
-    0% { transform: translateY(-100px) translateX(0px) rotate(0deg); }
-    25% { transform: translateY(25vh) translateX(15px) rotate(90deg); }
-    50% { transform: translateY(50vh) translateX(-15px) rotate(180deg); }
-    75% { transform: translateY(75vh) translateX(10px) rotate(270deg); }
-    100% { transform: translateY(110vh) translateX(0px) rotate(360deg); }
+    0% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+    25% { transform: translateY(25vh) translateX(10px) rotate(90deg); }
+    50% { transform: translateY(50vh) translateX(-10px) rotate(180deg); }
+    75% { transform: translateY(75vh) translateX(5px) rotate(270deg); }
+    100% { transform: translateY(100vh) translateX(0px) rotate(360deg); }
 }
 
+/* Petals falling */
 @keyframes fall {
-    0% { transform: translateY(-50px) rotate(0deg); }
-    100% { transform: translateY(110vh) rotate(var(--rotate-deg)); }
+    0% { transform: translateY(0px) rotate(0deg); }
+    100% { transform: translateY(100vh) rotate(var(--rotate-deg)); }
 }
 </style>
 </head>
@@ -266,30 +267,32 @@ const music = document.getElementById("bgMusic");
 yesBtn.addEventListener("click", () => {
     document.getElementById("celebration").style.display = "block";
     
-    music.volume = 0.3;  // 30% volume
-    music.play();         // no loop
+    music.volume = 0.3;  
+    music.play();         
 
-    createPetals();
+    createPetals();       
+    createLilies();       
 
-    // Show hidden message after 10 seconds
+    // Show hidden message after 5 seconds (instead of 10)
     setTimeout(() => {
         document.getElementById("hiddenMessageContainer").style.display = "block";
-    }, 10000);
+    }, 5000);
 });
 
-/* Optimized Lilies for mobile with random horizontal drift */
+/* Lilies falling from top */
 function createLilies() {
     const maxLilies = 8; 
     setInterval(() => {
         const lilies = document.querySelectorAll('.lily');
         if (lilies.length >= maxLilies) return;
+
         const lily = document.createElement("img");
-        lily.src = "lily.png"; // transparent PNG
+        lily.src = "lily.png"; 
         lily.classList.add("lily");
         lily.style.left = Math.random() * window.innerWidth + "px";
+        lily.style.top = "-60px"; // start above the screen
 
-        // Random animation duration between 10s and 14s
-        const duration = (10 + Math.random() * 4) + "s";
+        const duration = (10 + Math.random() * 4) + "s"; 
         lily.style.animationDuration = duration;
 
         document.body.appendChild(lily);
@@ -297,7 +300,7 @@ function createLilies() {
     }, 3000);
 }
 
-/* Optimized Petals for mobile with random rotation & speed */
+/* Petals falling from top */
 function createPetals() {
     const maxPetals = 25; 
     setInterval(() => {
@@ -305,16 +308,15 @@ function createPetals() {
         if (petals.length >= maxPetals) return;
 
         const petal = document.createElement("img");
-        petal.src = "petal.png"; // transparent PNG
+        petal.src = "petal.png"; 
         petal.classList.add("petal");
         petal.style.left = Math.random() * window.innerWidth + "px";
+        petal.style.top = "-35px"; // start above the screen
 
-        // Random rotation between 90deg and 360deg
         const rotateDeg = Math.floor(90 + Math.random() * 270);
         petal.style.setProperty('--rotate-deg', rotateDeg + 'deg');
 
-        // Random animation duration between 5s and 8s
-        const duration = (5 + Math.random() * 3) + "s";
+        const duration = (5 + Math.random() * 3) + "s"; 
         petal.style.animationDuration = duration;
 
         document.body.appendChild(petal);
