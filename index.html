@@ -78,6 +78,13 @@ input { padding: 12px; border-radius: 25px; border: none; text-align: center; wi
     padding: 10px; font-size: 0.95rem; height: 120px; line-height: 1.4;
     resize: none; overflow-y: auto; text-align: left; margin-bottom: 15px;
     opacity: 0; transition: opacity 1s ease;
+    animation: heartbeat 1.2s infinite;
+}
+@keyframes heartbeat {
+    0%,100%{ transform: scale(1);}
+    25%{ transform: scale(1.02);}
+    50%{ transform: scale(1.04);}
+    75%{ transform: scale(1.02);}
 }
 
 /* GALLERY */
@@ -92,7 +99,7 @@ input { padding: 12px; border-radius: 25px; border: none; text-align: center; wi
     flex-shrink: 0;
 }
 .gallery img.glow {
-    box-shadow: 0 0 5px #ff69b4; /* SOFT GLOW */
+    box-shadow: 0 0 3px #ff69b4; /* reduced soft glow for mobile */
     transform: scale(1.01);
 }
 
@@ -128,7 +135,7 @@ button { padding: 12px 25px; border-radius: 30px; border: none; font-weight: bol
 
 /* MOBILE ADJUSTMENTS */
 @media (max-width:480px){
-    #customTextBox { font-size:0.9rem; height: 140px; }
+    #customTextBox { font-size:0.9rem; height: 140px; animation: heartbeat 1.5s infinite; }
     .gallery img { width: 45vw; }
     #yesBtn { left:15%; } #noBtn{ left:55%; }
 }
@@ -217,7 +224,7 @@ function centerGallery(){
 window.addEventListener('resize', centerGallery);
 window.addEventListener('orientationchange', centerGallery);
 
-/* LOVE NOTE TYPING + FADE + SCROLL */
+/* LOVE NOTE TYPING + SCROLL */
 const loveNote=`This took me a bit longer than you might think to make baby, I know you said didn't want me buying you anything and I couldn't just not get you something for valentines day regardless of what we have going on so I made this for you. Every line of code is for you Veerena this is your website. Im sorry if it's not that extravagant but I hope you enjoy it and look at it from time to time. I love you please enjoy.`;
 function typeLoveNote(){
     const textarea=document.getElementById("customTextBox");
@@ -228,7 +235,7 @@ function typeLoveNote(){
         textarea.scrollTop = textarea.scrollHeight;
         i++;
         if(i>=loveNote.length) clearInterval(interval);
-    },180); // slower typing
+    },120); // slightly faster
 }
 
 /* NO BUTTON RUNAWAY */
@@ -303,7 +310,7 @@ function startGalleryGlow(){
                    rectEl.top + rectEl.height > rectPhoto.top &&
                    rectEl.top < rectPhoto.bottom){
                     photo.classList.add("glow");
-                    setTimeout(()=>photo.classList.remove("glow"),300);
+                    setTimeout(()=>photo.classList.remove("glow"),200); // short & soft
                 }
             });
         });
