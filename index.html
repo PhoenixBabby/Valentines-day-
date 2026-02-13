@@ -18,7 +18,7 @@ body {
     min-height: 100vh;
 }
 
-/* Password Screen Centered */
+/* PASSWORD SCREEN CENTERED */
 #passwordScreen {
     display: flex;
     position: fixed;
@@ -41,7 +41,7 @@ input {
     width: 200px;
 }
 
-/* Envelope Intro (hidden initially) */
+/* ENVELOPE INTRO */
 #intro {
     display: none;
     width: 100%;
@@ -65,32 +65,33 @@ input {
 .fadeOut { animation: fadeOut 1s forwards; }
 @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
 
-/* Main Content Centered */
+/* MAIN CONTENT CENTERED */
 #mainContent { 
     display: none; 
     padding: 0; 
-    display: flex; 
-    justify-content: center; 
-    align-items: flex-start; 
-    flex-direction: column; 
+    margin: 0;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
 }
 
-/* Container without top margin */
+/* CONTAINER WITHOUT TOP SPACE */
 .container {
-    margin: 10px auto 20px auto;
+    margin: 0 auto 20px auto;
     padding: 25px;
     background: rgba(255,255,255,0.75);
     border-radius: 25px;
     box-shadow: 0 10px 40px rgba(255,105,180,0.3);
     max-width: 420px;
+    position: relative;
 }
 
-/* Gallery */
+/* GALLERY */
 .gallery {
     display: flex;
     overflow-x: auto;
     gap: 15px;
-    margin: 0; 
+    margin: 0;
     scroll-snap-type: x mandatory;
     justify-content: center;
     align-items: flex-start;
@@ -107,11 +108,13 @@ input {
     scroll-snap-align: center;
 }
 
-/* Buttons */
+/* BUTTONS */
 .buttons {
     position: relative;
     height: 120px;
+    margin-top: 10px;
     margin-bottom: 20px;
+    overflow: hidden; /* NO button stays inside */
 }
 
 button {
@@ -137,14 +140,14 @@ button {
     left: 55%;
 }
 
-/* Celebration */
+/* CELEBRATION */
 #celebration {
     display: none;
     margin-top: 20px;
     font-size: 1.4rem;
 }
 
-/* Hidden Message Scrollable & Smooth */
+/* HIDDEN MESSAGE SCROLLABLE WITH SCROLL HINT */
 #hiddenMessageContainer {
     display: none;
     margin-top: 20px;
@@ -155,6 +158,23 @@ button {
     max-height: 180px;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
+    position: relative;
+}
+
+#hiddenMessageContainer::after {
+    content: "⬆️⬇️";
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.2rem;
+    opacity: 0.6;
+    animation: bounce 1.2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-6px); }
 }
 
 #hiddenMessage {
@@ -163,7 +183,7 @@ button {
     white-space: normal;
 }
 
-/* Lilies and Petals always on screen */
+/* LILIES AND PETALS */
 .lily, .petal {
     position: absolute;
     opacity: 0.9;
@@ -174,7 +194,6 @@ button {
 .lily { width: 50px; animation-name: floatDown; animation-timing-function: linear; animation-iteration-count: infinite; }
 .petal { width: 25px; animation-name: fall; animation-timing-function: linear; animation-iteration-count: 1; }
 
-/* Lilies float down */
 @keyframes floatDown {
     0% { transform: translateY(0px) translateX(0px) rotate(0deg); }
     25% { transform: translateY(25vh) translateX(10px) rotate(90deg); }
@@ -183,23 +202,69 @@ button {
     100% { transform: translateY(100vh) translateX(0px) rotate(360deg); }
 }
 
-/* Petals falling */
 @keyframes fall {
     0% { transform: translateY(0px) rotate(0deg); }
     100% { transform: translateY(100vh) rotate(var(--rotate-deg)); }
 }
 
-/* MOBILE ADJUSTMENTS ONLY: smaller/fewer lilies and petals */
+/* SPARKLE ANIMATION */
+@keyframes sparkle {
+    0% { transform: scale(0.3) rotate(0deg); opacity: 1; }
+    50% { transform: scale(1) rotate(180deg); opacity: 0.8; }
+    100% { transform: scale(0.1) rotate(360deg); opacity: 0; }
+}
+
+.sparkle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: radial-gradient(circle, #fff 0%, #ff69b4 80%);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: sparkle 0.8s ease-out forwards;
+    z-index: 100;
+}
+
+/* MOBILE ADJUSTMENTS */
 @media (max-width: 600px) {
     .lily { width: 35px !important; }
     .petal { width: 18px !important; }
+
+    #mainContent {
+        max-height: 100vh;
+        overflow: hidden; 
+        justify-content: flex-start;
+    }
+
+    .container {
+        max-height: calc(100vh - 20px);
+        padding: 15px;
+        margin-top: 0;
+        margin-bottom: 10px;
+    }
+
+    .gallery img {
+        width: 150px;
+        height: 200px;
+    }
+
+    .buttons {
+        height: 80px;
+        margin-top: 10px;
+        margin-bottom: 0;
+    }
+
+    #hiddenMessageContainer {
+        max-height: 150px;
+        overflow-y: auto;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<!-- PASSWORD PROMPT -->
+<!-- PASSWORD SCREEN -->
 <div id="passwordScreen">
     <h2>Enter The Secret Word 💕</h2>
     <input type="password" id="passwordInput" placeholder="Password">
@@ -208,13 +273,13 @@ button {
     <p id="error" style="color:red;"></p>
 </div>
 
-<!-- Envelope -->
+<!-- ENVELOPE -->
 <div id="intro">
     <h2>Tap To Open 💌</h2>
     <img src="envelope.png" id="envelope">
 </div>
 
-<!-- Main Content -->
+<!-- MAIN CONTENT -->
 <div id="mainContent">
     <div class="container">
         <h2>Veerena 🌸</h2>
@@ -234,13 +299,11 @@ button {
             I will never leave you 💗🌷
         </div>
 
-        <!-- Hidden Message Scrollable -->
         <div id="hiddenMessageContainer">
             <div id="hiddenMessage">
                 I will always love you baby even on the days it feels hard for both of us to understand each other we will get through thick and thin together and I know you feel the same. Please remember I’m still the same boy you fell in love with. We are going to close the distance and live the life we want together. Happy valentines my love you really do mean the world to me.
             </div>
         </div>
-
     </div>
 </div>
 
@@ -271,31 +334,65 @@ document.getElementById("envelope").addEventListener("click", () => {
     }, 1000);
 });
 
-/* NO BUTTON RUNAWAY */
+/* NO BUTTON RUNAWAY INSIDE CONTAINER */
 const noBtn = document.getElementById("noBtn");
+const buttonsContainer = document.querySelector('.buttons');
+
 noBtn.addEventListener("touchstart", moveNo);
 noBtn.addEventListener("mouseover", moveNo);
 
 function moveNo() {
-    const maxX = window.innerWidth - noBtn.offsetWidth;
-    const maxY = window.innerHeight - noBtn.offsetHeight;
+    const maxX = buttonsContainer.offsetWidth - noBtn.offsetWidth;
+    const maxY = buttonsContainer.offsetHeight - noBtn.offsetHeight;
     noBtn.style.left = Math.random() * maxX + "px";
     noBtn.style.top = Math.random() * maxY + "px";
 }
 
-/* YES BUTTON */
+/* YES BUTTON WITH MUSIC & SPARKLES */
 const yesBtn = document.getElementById("yesBtn");
 const music = document.getElementById("bgMusic");
 
 yesBtn.addEventListener("click", () => {
     document.getElementById("celebration").style.display = "block";
-    music.volume = 0.3;
-    music.play();
     createPetalsFromPhotos(); 
     createLiliesFromPhotos(); 
     setTimeout(() => {
         document.getElementById("hiddenMessageContainer").style.display = "block";
     }, 5000);
+
+    // Sparkles
+    for(let i=0;i<8;i++){
+        const sparkle = document.createElement("div");
+        sparkle.classList.add("sparkle");
+        sparkle.style.left = yesBtn.offsetLeft + yesBtn.offsetWidth/2 + (Math.random()*80-40) + "px";
+        sparkle.style.top = yesBtn.offsetTop + yesBtn.offsetHeight/2 + (Math.random()*80-40) + "px";
+        document.body.appendChild(sparkle);
+        setTimeout(() => sparkle.remove(), 800);
+    }
+
+    // Music fade in/out
+    music.volume = 0;
+    music.play();
+    let volume = 0;
+    const fadeInInterval = setInterval(() => {
+        if(volume < 0.3){
+            volume += 0.01;
+            music.volume = volume;
+        } else {
+            clearInterval(fadeInInterval);
+            setTimeout(() => {
+                const fadeOutInterval = setInterval(() => {
+                    if(volume > 0){
+                        volume -= 0.01;
+                        music.volume = Math.max(volume,0);
+                    } else {
+                        clearInterval(fadeOutInterval);
+                        music.pause();
+                    }
+                }, 100);
+            }, 15000);
+        }
+    }, 100);
 });
 
 /* CONSTANT SCREEN LILIES */
