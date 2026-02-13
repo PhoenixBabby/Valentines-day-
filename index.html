@@ -66,10 +66,18 @@ input {
 @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
 
 /* Main Content Centered */
-#mainContent { display: none; padding: 20px; display: flex; justify-content: center; align-items: center; flex-direction: column; }
+#mainContent { 
+    display: none; 
+    padding: 0; 
+    display: flex; 
+    justify-content: center; 
+    align-items: flex-start; 
+    flex-direction: column; 
+}
 
+/* Container without top margin */
 .container {
-    margin: auto;
+    margin: 10px auto 20px auto;
     padding: 25px;
     background: rgba(255,255,255,0.75);
     border-radius: 25px;
@@ -82,7 +90,7 @@ input {
     display: flex;
     overflow-x: auto;
     gap: 15px;
-    margin: 10px 0;
+    margin: 0; 
     scroll-snap-type: x mandatory;
     justify-content: center;
     align-items: flex-start;
@@ -146,7 +154,7 @@ button {
     overflow-y: auto;
     max-height: 180px;
     scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch; /* mobile smooth */
+    -webkit-overflow-scrolling: touch;
 }
 
 #hiddenMessage {
@@ -155,7 +163,7 @@ button {
     white-space: normal;
 }
 
-/* Lilies and Petals */
+/* Lilies and Petals always on screen */
 .lily, .petal {
     position: absolute;
     opacity: 0.9;
@@ -181,10 +189,10 @@ button {
     100% { transform: translateY(100vh) rotate(var(--rotate-deg)); }
 }
 
-/* Mobile Optimization */
+/* MOBILE ADJUSTMENTS ONLY: smaller/fewer lilies and petals */
 @media (max-width: 600px) {
-    .lily { width: 40px; }
-    .petal { width: 20px; }
+    .lily { width: 35px !important; }
+    .petal { width: 18px !important; }
 }
 </style>
 </head>
@@ -258,8 +266,8 @@ document.getElementById("envelope").addEventListener("click", () => {
     document.getElementById("intro").classList.add("fadeOut");
     setTimeout(() => {
         document.getElementById("mainContent").style.display = "flex";
-        createLilies();   // constant screen lilies
-        createPetals();   // constant screen petals
+        createLilies();   
+        createPetals();   
     }, 1000);
 });
 
@@ -281,13 +289,10 @@ const music = document.getElementById("bgMusic");
 
 yesBtn.addEventListener("click", () => {
     document.getElementById("celebration").style.display = "block";
-    
     music.volume = 0.3;
     music.play();
-
-    createPetalsFromPhotos(); // extra petals from gallery photos
-    createLiliesFromPhotos(); // extra lilies from gallery photos
-
+    createPetalsFromPhotos(); 
+    createLiliesFromPhotos(); 
     setTimeout(() => {
         document.getElementById("hiddenMessageContainer").style.display = "block";
     }, 5000);
@@ -299,17 +304,15 @@ function createLilies() {
     setInterval(() => {
         const lilies = document.querySelectorAll('.lily');
         if (lilies.length >= maxLilies) return;
-
         const lily = document.createElement("img");
         lily.src = "lily.png";
         lily.classList.add("lily");
         lily.style.left = Math.random() * window.innerWidth + "px";
         lily.style.top = "-60px";
         lily.style.animationDuration = (10 + Math.random()*4) + "s";
-
         document.body.appendChild(lily);
         setTimeout(() => lily.remove(), parseFloat(lily.style.animationDuration) * 1000);
-    }, window.innerWidth < 600 ? 4000 : 3000);
+    }, 3000);
 }
 
 /* CONSTANT SCREEN PETALS */
@@ -318,7 +321,6 @@ function createPetals() {
     setInterval(() => {
         const petals = document.querySelectorAll('.petal');
         if (petals.length >= maxPetals) return;
-
         const petal = document.createElement("img");
         petal.src = "petal.png";
         petal.classList.add("petal");
@@ -326,17 +328,16 @@ function createPetals() {
         petal.style.top = "-35px";
         petal.style.setProperty('--rotate-deg', Math.floor(90+Math.random()*270)+'deg');
         petal.style.animationDuration = (5+Math.random()*3) + "s";
-
         document.body.appendChild(petal);
         setTimeout(() => petal.remove(), parseFloat(petal.style.animationDuration)*1000);
-    }, window.innerWidth < 600 ? 600 : 400);
+    }, 400);
 }
 
-/* EXTRA PETALS FALLING FROM PHOTOS ON YES */
+/* EXTRA petals from photos on YES */
 function createPetalsFromPhotos() {
     const galleryPhotos = document.querySelectorAll('.gallery img');
     setInterval(() => {
-        const photo = galleryPhotos[Math.floor(Math.random() * galleryPhotos.length)];
+        const photo = galleryPhotos[Math.floor(Math.random()*galleryPhotos.length)];
         const rect = photo.getBoundingClientRect();
         const petal = document.createElement("img");
         petal.src = "petal.png";
@@ -345,17 +346,16 @@ function createPetalsFromPhotos() {
         petal.style.top = rect.top + "px";
         petal.style.setProperty('--rotate-deg', Math.floor(90+Math.random()*270)+'deg');
         petal.style.animationDuration = (5+Math.random()*3) + "s";
-
         document.body.appendChild(petal);
         setTimeout(() => petal.remove(), parseFloat(petal.style.animationDuration)*1000);
     }, 300);
 }
 
-/* EXTRA LILIES FALLING FROM PHOTOS ON YES */
+/* EXTRA lilies from photos on YES */
 function createLiliesFromPhotos() {
     const galleryPhotos = document.querySelectorAll('.gallery img');
     setInterval(() => {
-        const photo = galleryPhotos[Math.floor(Math.random() * galleryPhotos.length)];
+        const photo = galleryPhotos[Math.floor(Math.random()*galleryPhotos.length)];
         const rect = photo.getBoundingClientRect();
         const lily = document.createElement("img");
         lily.src = "lily.png";
@@ -363,9 +363,8 @@ function createLiliesFromPhotos() {
         lily.style.left = rect.left + Math.random()*rect.width + "px";
         lily.style.top = rect.top + "px";
         lily.style.animationDuration = (8+Math.random()*3) + "s";
-
         document.body.appendChild(lily);
-        setTimeout(() => lily.remove(), parseFloat(lily.style.animationDuration)*1000);
+        setTimeout(() => lily.remove(), parseFloat(lily.style.animationDuration) * 1000);
     }, 4000);
 }
 </script>
