@@ -59,13 +59,14 @@ input { padding: 12px; border-radius: 25px; border: none; text-align: center; wi
 #mainContent {
     display: none;
     width: 100%;
-    display: flex; justify-content: center; align-items: flex-start;
+    display: flex; justify-content: center; align-items: center;
     position: relative; z-index: 5;
+    padding: 20px 0;
 }
 .container {
     max-width: 420px; width: 95vw;
     padding: 25px; background: rgba(255,255,255,0.85);
-    border-radius: 25px; box-shadow: 0 10px 40px rgba(255,105,180,0.3);
+    border-radius: 25px; box-shadow: 0 10px 40px rgba(255,105,180,0.2);
     display: flex; flex-direction: column; justify-content: center;
     align-items: center; text-align: center; position: relative;
     overflow: hidden;
@@ -86,14 +87,14 @@ input { padding: 12px; border-radius: 25px; border: none; text-align: center; wi
 }
 .gallery img {
     width: 200px; max-width: 90vw; height: auto; border-radius: 20px;
-    border: 3px solid #ff69b4; transition: box-shadow 0.3s, transform 0.3s;
+    border: 2px solid #ff69b4; transition: box-shadow 0.3s, transform 0.3s;
     flex-shrink: 0;
 }
 .gallery img.glow {
-    box-shadow: 0 0 25px #ff69b4; transform: scale(1.05);
+    box-shadow: 0 0 15px #ff69b4; transform: scale(1.03);
     animation: bounceGlow 0.3s ease;
 }
-@keyframes bounceGlow { 0%{transform: scale(1);}50%{transform: scale(1.08);}100%{transform: scale(1.05);} }
+@keyframes bounceGlow { 0%{transform: scale(1);}50%{transform: scale(1.03);}100%{transform: scale(1.03);} }
 
 /* BUTTONS */
 .buttons { position: relative; height: 120px; width: 100%; margin-bottom: 20px; }
@@ -207,8 +208,7 @@ function centerGallery(){
     const gallery=document.querySelector('.gallery');
     const totalWidth=Array.from(gallery.children).reduce((acc,img)=>acc+img.offsetWidth+15,0);
     const viewportWidth=window.innerWidth;
-    if(totalWidth<viewportWidth){ gallery.style.justifyContent='center'; } 
-    else { gallery.style.justifyContent='flex-start'; }
+    gallery.style.justifyContent=totalWidth<viewportWidth?'center':'flex-start';
 }
 window.addEventListener('resize', centerGallery);
 window.addEventListener('orientationchange', centerGallery);
@@ -223,7 +223,7 @@ function typeLoveNote(){
         textarea.scrollTop = textarea.scrollHeight;
         i++;
         if(i>=loveNote.length) clearInterval(interval);
-    },80);
+    },120);
 }
 
 /* NO BUTTON RUNAWAY */
@@ -256,36 +256,33 @@ function createFloatingPetals(){
         petal.classList.add("floatingPetal");
         petal.style.left=Math.random()*window.innerWidth+"px";
         petal.style.top="-40px";
-        petal.style.animationDuration=(8+Math.random()*5)+"s";
+        petal.style.animationDuration=(6+Math.random()*4)+"s";
         petal.style.transform = `rotate(${Math.random()*360}deg)`;
         document.body.appendChild(petal);
         setTimeout(()=>petal.remove(),12000);
-    },500);
+    },300);
 }
 
 /* LILIES & PETALS */
 function createLilies(){ setInterval(()=>{
-    if(document.querySelectorAll('.lily').length>=8) return;
     const lily=document.createElement("img");
     lily.src="lily.png";
     lily.classList.add("lily");
     lily.style.left=Math.random()*window.innerWidth+"px";
     lily.style.top="-60px";
-    lily.style.animationDuration=(10+Math.random()*4)+"s";
+    lily.style.animationDuration=(8+Math.random()*3)+"s";
     document.body.appendChild(lily);
-    setTimeout(()=>lily.remove(),parseFloat(lily.style.animationDuration)*1000);
-},3000);}
-function createPetals(){ const maxPetals=25; setInterval(()=>{
-    if(document.querySelectorAll('.petal').length>=maxPetals) return;
+},2000);}
+function createPetals(){ setInterval(()=>{
     const petal=document.createElement("img");
     petal.src="petal.png";
     petal.classList.add("petal");
     petal.style.left=Math.random()*window.innerWidth+"px";
     petal.style.top="-40px";
     petal.style.setProperty('--rotate-deg',Math.floor(90+Math.random()*270)+'deg');
-    petal.style.animationDuration=(5+Math.random()*3)+"s";
+    petal.style.animationDuration=(4+Math.random()*2)+"s";
     document.body.appendChild(petal);
-},400);}
+},300);}
 
 /* GALLERY GLOW + BOUNCE */
 function startGalleryGlow(){
