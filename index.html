@@ -92,6 +92,20 @@ input {
     align-items: center;
 }
 
+/* CUSTOM TEXT BOX */
+#customTextBoxContainer { margin-bottom: 15px; width: 100%; }
+#customTextBox {
+    width: 100%;
+    border-radius: 15px;
+    border: 2px solid #ff69b4;
+    padding: 10px;
+    resize: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    height: 120px;
+    line-height: 1.4;
+}
+
 /* GALLERY */
 .gallery {
     display: flex;
@@ -243,6 +257,13 @@ button {
         <h2>Veerena 🌸</h2>
         <p>Will you be my Valentine?</p>
 
+        <!-- CUSTOM TEXT BOX WITH YOUR MESSAGE -->
+        <div id="customTextBoxContainer">
+            <textarea id="customTextBox">
+This took me a bit longer than you might think to make baby, I know you said didn't want me buying you anything and I couldn't just not get you something for valentines day regardless of what we have going on so I made this for you. Every line of code is for you Veerena this is your website. Im sorry if it's not that extravagant but I hope you enjoy it and look at it from time to time. I love you please enjoy.
+            </textarea>
+        </div>
+
         <div class="gallery">
             <img src="photo1.jpg">
             <img src="photo2.jpg">
@@ -316,7 +337,7 @@ yesBtn.addEventListener("click", () => {
     document.getElementById("celebration").style.display = "block";
     createPetalsFromPhotos(); 
     createLiliesFromPhotos(); 
-    glowGalleryPhotos(); // start interactive glow
+    glowGalleryPhotos(); 
     setTimeout(() => {
         document.getElementById("hiddenMessageContainer").style.display = "block";
         document.getElementById("scrollHint").style.display = "block";
