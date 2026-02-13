@@ -78,13 +78,13 @@ input { padding: 12px; border-radius: 25px; border: none; text-align: center; wi
     padding: 10px; font-size: 0.95rem; height: 120px; line-height: 1.4;
     resize: none; overflow-y: auto; text-align: left; margin-bottom: 15px;
     opacity: 0; transition: opacity 1s ease;
-    animation: heartbeat 1.2s infinite;
+    animation: heartbeat 2.5s infinite;
 }
 @keyframes heartbeat {
     0%,100%{ transform: scale(1);}
-    25%{ transform: scale(1.02);}
-    50%{ transform: scale(1.04);}
-    75%{ transform: scale(1.02);}
+    25%{ transform: scale(1.015);}
+    50%{ transform: scale(1.03);}
+    75%{ transform: scale(1.015);}
 }
 
 /* GALLERY */
@@ -98,10 +98,7 @@ input { padding: 12px; border-radius: 25px; border: none; text-align: center; wi
     border: 2px solid #ff69b4; transition: box-shadow 0.3s, transform 0.3s;
     flex-shrink: 0;
 }
-.gallery img.glow {
-    box-shadow: 0 0 3px #ff69b4; /* reduced soft glow for mobile */
-    transform: scale(1.01);
-}
+.gallery img.glow { box-shadow: 0 0 3px #ff69b4; transform: scale(1.01); }
 
 /* BUTTONS */
 .buttons { position: relative; height: 120px; width: 100%; margin-bottom: 20px; }
@@ -120,10 +117,8 @@ button { padding: 12px 25px; border-radius: 30px; border: none; font-weight: bol
 }
 
 /* FLOATING PETALS */
-.floatingPetal {
-    position: absolute; width: 30px; pointer-events: none; opacity: 0.9;
-    animation-name: floatPetal; animation-timing-function: linear; animation-iteration-count: infinite;
-}
+.floatingPetal { position: absolute; width: 30px; pointer-events: none; opacity: 0.9;
+animation-name: floatPetal; animation-timing-function: linear; animation-iteration-count: infinite; }
 @keyframes floatPetal {0%{transform: translateY(0) rotate(0deg);}100%{transform: translateY(100vh) rotate(360deg);}}
 
 /* LILIES & PETALS */
@@ -131,11 +126,9 @@ button { padding: 12px 25px; border-radius: 30px; border: none; font-weight: bol
 .lily { width: 50px; animation-name: floatDown; animation-timing-function: linear; animation-iteration-count: infinite; }
 .petal { width: 40px; animation-name: fall; animation-timing-function: linear; animation-iteration-count:1; }
 @keyframes floatDown {0%{transform:translateY(0) rotate(0deg);}100%{transform:translateY(100vh) rotate(360deg);}}
-@keyframes fallFromPhoto {0%{transform:translateY(0) rotate(0deg);}100%{transform:translateY(260px) rotate(var(--rotate-deg));}}
 
-/* MOBILE ADJUSTMENTS */
 @media (max-width:480px){
-    #customTextBox { font-size:0.9rem; height: 140px; animation: heartbeat 1.5s infinite; }
+    #customTextBox { font-size:0.9rem; height: 140px; animation: heartbeat 3.5s infinite; }
     .gallery img { width: 45vw; }
     #yesBtn { left:15%; } #noBtn{ left:55%; }
 }
@@ -224,7 +217,7 @@ function centerGallery(){
 window.addEventListener('resize', centerGallery);
 window.addEventListener('orientationchange', centerGallery);
 
-/* LOVE NOTE TYPING + SCROLL */
+/* LOVE NOTE TYPING + AUTO SCROLL */
 const loveNote=`This took me a bit longer than you might think to make baby, I know you said didn't want me buying you anything and I couldn't just not get you something for valentines day regardless of what we have going on so I made this for you. Every line of code is for you Veerena this is your website. Im sorry if it's not that extravagant but I hope you enjoy it and look at it from time to time. I love you please enjoy.`;
 function typeLoveNote(){
     const textarea=document.getElementById("customTextBox");
@@ -232,10 +225,10 @@ function typeLoveNote(){
     let i=0; textarea.value="";
     const interval=setInterval(()=>{
         textarea.value+=loveNote.charAt(i);
-        textarea.scrollTop = textarea.scrollHeight;
+        textarea.scrollTop = textarea.scrollHeight; // scroll as it types
         i++;
         if(i>=loveNote.length) clearInterval(interval);
-    },120); // slightly faster
+    },80); // slightly faster typing
 }
 
 /* NO BUTTON RUNAWAY */
@@ -256,7 +249,7 @@ const music=document.getElementById("bgMusic");
 music.volume=0.4;
 yesBtn.addEventListener("click",()=>{
     document.getElementById("celebration").style.display="block";
-    setTimeout(()=>{ document.getElementById("hiddenMessageContainer").style.display="block"; },15000);
+    setTimeout(()=>{ document.getElementById("hiddenMessageContainer").style.display="block"; },6500); // 6.5s
     music.play();
 });
 
